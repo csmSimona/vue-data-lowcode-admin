@@ -162,6 +162,16 @@ export const generatedRoutes: GeneratedRoute[] = [
     ]
   },
   {
+    name: 'preview',
+    path: '/preview',
+    component: 'layout.blank$view.preview',
+    meta: {
+      title: 'preview',
+      hideInMenu: true,
+      i18nKey: 'route.preview'
+    }
+  },
+  {
     name: 'user-center',
     path: '/user-center',
     component: 'layout.base$view.user-center',

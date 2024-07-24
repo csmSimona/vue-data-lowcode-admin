@@ -42,6 +42,7 @@ declare module "@elegant-router/types" {
     "manage_role": "/manage/role";
     "manage_user": "/manage/user";
     "manage_user-detail": "/manage/user-detail/:id";
+    "preview": "/preview";
     "user-center": "/user-center";
   };
 
@@ -94,6 +95,7 @@ declare module "@elegant-router/types" {
     | "home"
     | "login"
     | "manage"
+    | "preview"
     | "user-center"
   >;
 
@@ -124,6 +126,7 @@ declare module "@elegant-router/types" {
     | "manage_role"
     | "manage_user-detail"
     | "manage_user"
+    | "preview"
     | "user-center"
   >;
 

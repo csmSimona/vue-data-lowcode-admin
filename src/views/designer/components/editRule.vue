@@ -116,7 +116,7 @@ watch(
         const fitHeight = screensRect.height - 100;
 
         const scaleWidth = props.width > fitWidth ? fitWidth / props.width : 1;
-        const scaleHeight = props.height > fitWidth ? fitHeight / props.height : 1;
+        const scaleHeight = props.height > fitHeight ? fitHeight / props.height : 1;
 
         state.scale = Math.min(scaleWidth, scaleHeight);
       }

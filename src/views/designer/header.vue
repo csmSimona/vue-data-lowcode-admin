@@ -9,7 +9,7 @@ const { routerPushByKey } = useRouterPush();
     <div>大屏设计器</div>
     <div class="flex gap-4">
       <NButton type="primary">保存</NButton>
-      <NButton>预览</NButton>
+      <NButton @click="routerPushByKey('preview')">预览</NButton>
       <NButton>发布</NButton>
     </div>
   </div>
