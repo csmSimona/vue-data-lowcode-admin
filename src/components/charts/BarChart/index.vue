@@ -44,7 +44,7 @@ watch(
 );
 
 watch(
-  [props.chartOption, props.chartData],
+  () => [props.chartOption, props.chartData],
   () => {
     nextTick(() => {
       loadChart();
@@ -72,13 +72,11 @@ function loadChart() {
       trigger: 'axis'
     },
     grid: {
-      x: 10,
-      y: 30,
-      x2: 10,
-      y2: 10,
-      containLabel: true
+      containLabel: true,
+      ...props.chartOption.grid
     },
     xAxis: {
+      show: props.chartOption.xAxisShow,
       type: 'category',
       data: props.chartData.xData,
       axisLabel: {
@@ -101,6 +99,7 @@ function loadChart() {
       }
     },
     yAxis: {
+      show: props.chartOption.yAxisShow,
       type: 'value',
       axisLabel: {
         show: props.chartOption.yLabelShow,

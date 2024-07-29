@@ -78,7 +78,7 @@ const handleWheel = e => {
 // 缩放比例
 const cpuScale = computed(() => {
   const num = Number(state.scale);
-  return num.toFixed(2);
+  return Number(num.toFixed(2));
 });
 
 // 滚动居中
@@ -140,7 +140,7 @@ defineExpose({
     <div class="toolBox">
       <div class="scale">缩放比例:{{ cpuScale }}</div>
       <NSlider
-        v-model:value="state.scale"
+        v-model:value="cpuScale"
         :step="minScale"
         :min="minScale"
         :max="maxScale"

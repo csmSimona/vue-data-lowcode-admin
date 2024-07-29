@@ -1,6 +1,7 @@
 import process from 'node:process';
 import { URL, fileURLToPath } from 'node:url';
 import { defineConfig, loadEnv } from 'vite';
+import monacoEditorPlugin from 'vite-plugin-monaco-editor';
 import { setupVitePlugins } from './build/plugins';
 import { createViteProxy, getBuildTime } from './build/config';
 
@@ -24,7 +25,19 @@ export default defineConfig(configEnv => {
         }
       }
     },
-    plugins: setupVitePlugins(viteEnv, buildTime),
+    // plugins: setupVitePlugins(viteEnv, buildTime),
+    plugins: [
+      setupVitePlugins(viteEnv, buildTime),
+      monacoEditorPlugin.default({
+        languageWorkers: ['editorWorkerService', 'typescript', 'json', 'html'],
+        customWorkers: [
+          {
+            label: 'graphql',
+            entry: 'monaco-graphql/dist/graphql.worker'
+          }
+        ]
+      })
+    ],
     define: {
       BUILD_TIME: JSON.stringify(buildTime)
     },

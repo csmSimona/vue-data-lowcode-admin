@@ -27,6 +27,8 @@ export const useChartEditStore = defineStore('chartEditStore', () => {
         width: 500,
         height: 300,
         chartOption: {
+          xAxisShow: true,
+          yAxisShow: true,
           xTickShow: true,
           yTickShow: true,
           xGridLineShow: false,
@@ -39,7 +41,13 @@ export const useChartEditStore = defineStore('chartEditStore', () => {
           yLabelColor: '#eee',
           xLineColor: '#fff',
           yLineColor: '#eee',
-          barColor: '#409eff'
+          barColor: '#409eff',
+          grid: {
+            left: 10,
+            top: 20,
+            right: 10,
+            bottom: 10
+          }
         },
         chartData: {
           xData: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
@@ -55,6 +63,8 @@ export const useChartEditStore = defineStore('chartEditStore', () => {
         width: 500,
         height: 300,
         chartOption: {
+          xAxisShow: true,
+          yAxisShow: true,
           xTickShow: true,
           yTickShow: true,
           xGridLineShow: false,
@@ -68,7 +78,13 @@ export const useChartEditStore = defineStore('chartEditStore', () => {
           xLineColor: '#fff',
           yLineColor: '#eee',
           lineColor: '#409eff',
-          smooth: false
+          smooth: false,
+          grid: {
+            left: 10,
+            top: 20,
+            right: 10,
+            bottom: 10
+          }
         },
         chartData: {
           xData: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],

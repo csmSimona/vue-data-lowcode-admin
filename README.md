@@ -50,3 +50,5 @@ https://gitee.com/majun2232/vue3sketchRuler
 11、大屏预览
 
 12、图层切换 
+
+13、列表展示

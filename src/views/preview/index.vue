@@ -1,5 +1,5 @@
 <script setup lang="jsx">
-import { nextTick, onMounted, ref, watch } from 'vue';
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useChartEditStore } from '@/store/modules/chartEditStore';
 
 const chartEditStore = useChartEditStore();
@@ -17,6 +17,10 @@ const updateScale = () => {
 
 onMounted(() => {
   window.addEventListener('resize', updateScale);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateScale);
 });
 
 watch(

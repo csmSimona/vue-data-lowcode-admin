@@ -1,4 +1,7 @@
 export const commonOption = {
+  // 轴是否展示
+  xAxisShow: true,
+  yAxisShow: true,
   // 轴线是否展示
   xLineShow: true,
   yLineShow: true,
@@ -16,5 +19,12 @@ export const commonOption = {
   yLabelColor: '#eee',
   // 坐标轴线颜色
   xLineColor: '#fff',
-  yLineColor: '#eee'
+  yLineColor: '#eee',
+  // 距离
+  grid: {
+    left: 10,
+    top: 20,
+    right: 10,
+    bottom: 10,
+  }
 };
