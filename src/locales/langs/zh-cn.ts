@@ -159,7 +159,16 @@ const local: App.I18n.Schema = {
     exception_500: '500',
     'cockpit-manage': '大屏管理',
     'cockpit-manage_list': '所有大屏',
-    designer: '大屏设计器'
+    designer: '大屏设计器',
+    document: '',
+    document_project: '',
+    'document_project-link': '',
+    document_vue: '',
+    document_vite: '',
+    document_unocss: '',
+    document_naive: '',
+    document_antd: '',
+    preview: '预览'
   },
   page: {
     login: {

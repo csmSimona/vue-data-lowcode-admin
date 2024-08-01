@@ -21,6 +21,6 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true
   },
-  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.vue", "src/store/modules/chartEditStore/index.js"],
+  "include": ["app.d.ts", "./**/*.ts", "./**/*.tsx", "./**/*.vue", "src/store/modules/chartEditStore/index.js"],
   "exclude": ["node_modules", "dist"]
 }

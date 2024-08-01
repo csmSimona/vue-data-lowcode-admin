@@ -14,6 +14,7 @@ const props = defineProps({
   }
 });
 
+const step = 0.01;
 const minScale = 0.05;
 const maxScale = 2;
 const sketchRuleRef = ref(null);
@@ -118,7 +119,7 @@ watch(
         const scaleWidth = props.width > fitWidth ? fitWidth / props.width : 1;
         const scaleHeight = props.height > fitHeight ? fitHeight / props.height : 1;
 
-        state.scale = Math.min(scaleWidth, scaleHeight);
+        state.scale = Number(Math.min(scaleWidth, scaleHeight).toFixed(2));
       }
 
       handleScroll();
@@ -140,8 +141,8 @@ defineExpose({
     <div class="toolBox">
       <div class="scale">缩放比例:{{ cpuScale }}</div>
       <NSlider
-        v-model:value="cpuScale"
-        :step="minScale"
+        v-model:value="state.scale"
+        :step="step"
         :min="minScale"
         :max="maxScale"
         :on-update-value="scaleChange"

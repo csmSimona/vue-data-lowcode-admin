@@ -28,9 +28,9 @@ const updateComponentData = () => {
       <NTabPane name="canvas" tab="大屏配置" class="configPaneWrapper"><CanvasConfig /></NTabPane>
     </NTabs>
 
-    <NTabs v-if="selectComponent?.value?.id" default-value="chart" size="large" justify-content="space-evenly">
-      <NTabPane name="chart" tab="图表" class="configPaneWrapper">
-        <NForm label-placement="left" label-width="100" :model="selectComponent.value">
+    <NTabs v-if="selectComponent?.value?.id" default-value="basic" size="large" justify-content="space-evenly">
+      <NTabPane name="basic" tab="基础配置" class="configPaneWrapper">
+        <NForm label-placement="left" label-width="80" :model="selectComponent.value">
           <NFormItemRow label="名称" path="name">
             <NInput v-model:value="selectComponent.value.chartName" />
           </NFormItemRow>
@@ -56,6 +56,22 @@ const updateComponentData = () => {
           <NFormItemRow label="坐标y" path="y">
             <NInputNumber v-model:value="selectComponent.value.y" :min="0" :max="canvasConfig.height" class="w-full" />
           </NFormItemRow>
+          <NFormItemRow label="距离(上)" path="top">
+            <NInputNumber v-model:value="selectComponent.value.chartOption.grid.top" class="w-full" />
+          </NFormItemRow>
+          <NFormItemRow label="距离(下)" path="bottom">
+            <NInputNumber v-model:value="selectComponent.value.chartOption.grid.bottom" class="w-full" />
+          </NFormItemRow>
+          <NFormItemRow label="距离(左)" path="left">
+            <NInputNumber v-model:value="selectComponent.value.chartOption.grid.left" class="w-full" />
+          </NFormItemRow>
+          <NFormItemRow label="距离(右)" path="right">
+            <NInputNumber v-model:value="selectComponent.value.chartOption.grid.right" class="w-full" />
+          </NFormItemRow>
+        </NForm>
+      </NTabPane>
+      <NTabPane name="chart" tab="图表" class="configPaneWrapper">
+        <NForm label-placement="left" label-width="100" :model="selectComponent.value">
           <!-- 各图表实例相关配置 -->
           <component :is="selectComponent.value.chartKey + 'Option'" :config="selectComponent.value.chartOption" />
         </NForm>

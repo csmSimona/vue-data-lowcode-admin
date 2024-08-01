@@ -8,7 +8,7 @@ defineProps({
   expanded: {
     type: Boolean,
     required: false,
-    default: false
+    default: true
   }
 });
 
@@ -19,7 +19,6 @@ const click = (e: MouseEvent) => {
 </script>
 
 <template>
-  <NDivider class="my-10px"></NDivider>
   <NCollapse arrow-placement="right" :default-expanded-names="expanded ? name : null" accordion>
     <!-- 右侧 -->
     <template #header-extra>
@@ -32,4 +31,5 @@ const click = (e: MouseEvent) => {
       <slot></slot>
     </NCollapseItem>
   </NCollapse>
+  <NDivider></NDivider>
 </template>

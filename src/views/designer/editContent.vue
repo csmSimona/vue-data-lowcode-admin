@@ -36,7 +36,7 @@ function drop(e) {
 // 点击画布空白处
 function handleClickBlank() {
   selectComponent.value = {};
-  console.log('componentList', componentList)
+  console.log('componentList', componentList);
 }
 
 // 选中图表实例

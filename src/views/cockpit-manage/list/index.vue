@@ -1,148 +1,171 @@
 <script setup lang="jsx">
-import { NButton, NPopconfirm, NTag } from 'naive-ui';
+import { reactive, ref, watch } from 'vue';
+import { NButton, useDialog, useMessage } from 'naive-ui';
 import { fetchGetRoleList } from '@/service/api';
-import { useTable, useTableOperate } from '@/hooks/common/table';
 import { useRouterPush } from '@/hooks/common/router';
-import RoleOperateDrawer from './components/role-operate-drawer.vue';
-import RoleSearch from './components/role-search.vue';
+
+const message = useMessage();
+const dialog = useDialog();
 
 const { routerPushByKey } = useRouterPush();
-
-const { columns, data, loading, getData, getDataByPage, mobilePagination, searchParams, resetSearchParams } = useTable({
-  apiFn: fetchGetRoleList,
-  apiParams: {
-    current: 1,
-    size: 10,
-    status: null,
-    roleName: null,
-    roleCode: null
-  },
-  columns: () => [
-    {
-      key: 'index',
-      title: '序号',
-      width: 64,
-      align: 'center'
-    },
-    {
-      key: 'roleName',
-      title: '角色名称',
-      align: 'center',
-      minWidth: 120
-    },
-    {
-      key: 'roleCode',
-      title: '角色编码',
-      align: 'center',
-      minWidth: 120
-    },
-    {
-      key: 'roleDesc',
-      title: '角色描述',
-      minWidth: 120
-    },
-    {
-      key: 'status',
-      title: '角色状态',
-      align: 'center',
-      width: 100,
-      render: row => {
-        if (row.status === null) {
-          return null;
-        }
-
-        const tagMap = {
-          1: 'success',
-          2: 'warning'
-        };
-
-        const enableStatusMap = {
-          1: '启用',
-          2: '禁用'
-        };
-
-        const label = enableStatusMap[row.status];
-
-        return <NTag type={tagMap[row.status]}>{label}</NTag>;
-      }
-    },
-    {
-      key: 'operate',
-      title: '操作',
-      align: 'center',
-      width: 130,
-      render: row => (
-        <div class="flex-center gap-8px">
-          <NButton type="primary" ghost size="small" onClick={() => edit(row.id)}>
-            编辑
-          </NButton>
-          <NPopconfirm onPositiveClick={() => handleDelete(row.id)}>
-            {{
-              default: '确认删除吗',
-              trigger: () => (
-                <NButton type="error" ghost size="small">
-                  删除
-                </NButton>
-              )
-            }}
-          </NPopconfirm>
-        </div>
-      )
-    }
-  ]
-});
-
-const { drawerVisible, operateType, editingData, handleAdd, handleEdit, onDeleted } = useTableOperate(data, getData);
-
-function handleDelete(id) {
-  // request
-  console.log(id);
-
-  onDeleted();
+const pageSize = 11;
+const page = ref(1);
+const loading = ref(false);
+const record = reactive({});
+function getDataList() {
+  loading.value = true;
+  fetchGetRoleList({
+    current: page.value,
+    size: pageSize
+  })
+    .then(({ data }) => {
+      record.value = data;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
-function edit(id) {
-  handleEdit(id);
+watch(
+  page,
+  () => {
+    getDataList();
+  },
+  {
+    immediate: true
+  }
+);
+
+// 预览大屏
+function handlePreview(id) {
+  routerPushByKey('preview', {
+    query: {
+      id,
+      type: 'view'
+    }
+  });
+}
+
+// 编辑大屏
+function handleEdit(id) {
+  routerPushByKey('designer', {
+    query: {
+      id
+    }
+  });
+}
+
+// 删除大屏
+function handleDelete(id) {
+  dialog.warning({
+    title: '警告',
+    content: '确认要删除该大屏吗？',
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: () => {
+      // TODO 删除大屏api
+      message.success('删除成功');
+      getDataList();
+    },
+    onNegativeClick: () => {}
+  });
 }
 </script>
 
 <template>
   <div>
-    <RoleSearch v-model:model="searchParams" @reset="resetSearchParams" @search="getDataByPage" />
-
-    <NCard :bordered="false" size="small" class="mt-20px card-wrapper">
-      <NButton type="primary" class="mb-16px mr-20px" @click="routerPushByKey('designer')">
+    <NCard :bordered="false" size="small" class="mt-10px card-wrapper">
+      <!--
+ <NButton type="primary" class="mb-16px mr-20px" @click="routerPushByKey('designer')">
         <template #icon>
           <icon-ic-round-plus class="text-icon" />
         </template>
         新增大屏
-      </NButton>
-
-      <NButton type="primary" class="mb-16px" @click="handleAdd">
-        <template #icon>
-          <icon-ic-round-plus class="text-icon" />
-        </template>
-        新增
-      </NButton>
-
-      <NDataTable
-        :columns="columns"
-        :data="data"
-        size="small"
-        :loading="loading"
-        remote
-        :row-key="row => row.id"
-        :pagination="mobilePagination"
-      />
-
-      <RoleOperateDrawer
-        v-model:visible="drawerVisible"
-        :operate-type="operateType"
-        :row-data="editingData"
-        @submitted="getDataByPage"
-      />
+      </NButton> 
+-->
+      <NSpin :show="loading">
+        <div class="recordBox">
+          <div class="recordCard" @click="routerPushByKey('designer')">
+            <div class="add">
+              <icon-ic-round-plus class="text-icon" />
+              新增大屏
+            </div>
+          </div>
+          <div v-for="item in record.value?.records" :key="item.id" class="recordCard">
+            <!-- TODO 大屏缩略图 -->
+            <div class="content"></div>
+            <div class="desc">
+              <span>{{ item.roleName }}</span>
+              <span>{{ item.updateTime }}</span>
+            </div>
+            <div class="mask">
+              <span class="action" @click="handlePreview(item.id)">预览</span>
+              <span class="action" @click="handleEdit(item.id)">编辑</span>
+              <span class="action" @click="handleDelete(item.id)">删除</span>
+            </div>
+          </div>
+          <div v-if="!record.value" class="h-40vh" />
+        </div>
+      </NSpin>
+      <NPagination v-if="record.value" v-model:page="page" :page-size="pageSize" :item-count="record.value?.total" />
     </NCard>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.recordBox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 16px;
+  .recordCard {
+    border: 1px solid #e5e5e5;
+    width: calc((100% - 45px) / 4);
+    min-width: 250px;
+    height: 200px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    .content {
+      flex: 1;
+      background: rgb(170, 203, 235, 0.5);
+    }
+    .desc {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .add {
+      flex: 1;
+      background: rgb(170, 203, 235, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .recordCard:hover {
+    border: 1px solid #646cff;
+  }
+  .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(127, 127, 127, 0.2);
+    display: none;
+    align-items: center;
+    justify-content: space-evenly;
+    color: #000;
+  }
+  .action:hover {
+    color: #646cff;
+  }
+
+  .recordCard:hover .mask {
+    display: flex;
+  }
+}
+</style>

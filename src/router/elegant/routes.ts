@@ -103,10 +103,7 @@ export const generatedRoutes: GeneratedRoute[] = [
     component: 'layout.base',
     meta: {
       title: 'manage',
-      i18nKey: 'route.manage',
-      icon: 'carbon:cloud-service-management',
-      order: 4,
-      roles: ['R_ADMIN']
+      i18nKey: 'route.manage'
     },
     children: [
       {
@@ -115,11 +112,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         component: 'view.manage_menu',
         meta: {
           title: 'manage_menu',
-          i18nKey: 'route.manage_menu',
-          icon: 'material-symbols:route',
-          order: 3,
-          roles: ['R_ADMIN'],
-          keepAlive: true
+          i18nKey: 'route.manage_menu'
         }
       },
       {
@@ -128,10 +121,7 @@ export const generatedRoutes: GeneratedRoute[] = [
         component: 'view.manage_role',
         meta: {
           title: 'manage_role',
-          i18nKey: 'route.manage_role',
-          icon: 'carbon:user-role',
-          order: 2,
-          roles: ['R_SUPER']
+          i18nKey: 'route.manage_role'
         }
       },
       {
@@ -140,23 +130,16 @@ export const generatedRoutes: GeneratedRoute[] = [
         component: 'view.manage_user',
         meta: {
           title: 'manage_user',
-          i18nKey: 'route.manage_user',
-          icon: 'ic:round-manage-accounts',
-          order: 1,
-          roles: ['R_ADMIN']
+          i18nKey: 'route.manage_user'
         }
       },
       {
         name: 'manage_user-detail',
         path: '/manage/user-detail/:id',
         component: 'view.manage_user-detail',
-        props: true,
         meta: {
           title: 'manage_user-detail',
-          i18nKey: 'route.manage_user-detail',
-          hideInMenu: true,
-          roles: ['R_ADMIN'],
-          activeMenu: 'manage_user'
+          i18nKey: 'route.manage_user-detail'
         }
       }
     ]
