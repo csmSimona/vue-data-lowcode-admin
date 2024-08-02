@@ -2,11 +2,11 @@
 import { ChartList } from '@/components/charts';
 import { useChartEditStore } from '@/store/modules/chartEditStore';
 const chartEditStore = useChartEditStore();
-const { selectComponent } = chartEditStore;
+const { selectComponent, dragData } = chartEditStore;
 const { componentList } = chartEditStore.designData;
 
 function dragStart(_, item) {
-  chartEditStore.setDragData(item);
+  dragData.value = item;
 }
 
 // 鼠标双击添加图表实例

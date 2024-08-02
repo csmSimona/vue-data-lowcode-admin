@@ -29,7 +29,7 @@ function drop(e) {
     id: Math.random().toFixed(6).slice(-6)
   };
   chartEditStore.addComponentList(newComponent);
-  chartEditStore.setDragData({});
+  dragData.value = {};
   selectComponent.value = newComponent;
 }
 

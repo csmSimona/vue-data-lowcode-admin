@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useBoolean } from '@sa/hooks';
+import { useRouter } from 'vue-router';
 import { useAppStore } from '@/store/modules/app';
 import { useThemeStore } from '@/store/modules/theme';
-import { useRouterPush } from '@/hooks/common/router';
 import { $t } from '@/locales';
 import { useMixMenuContext } from '../../context';
 import FirstLevelMenu from './first-level-menu.vue';
 import BaseMenu from './base-menu.vue';
+
+const router = useRouter();
 
 defineOptions({
   name: 'VerticalMixMenu'
@@ -15,7 +17,6 @@ defineOptions({
 
 const appStore = useAppStore();
 const themeStore = useThemeStore();
-const { routerPushByKey } = useRouterPush();
 const { bool: drawerVisible, setBool: setDrawerVisible } = useBoolean();
 const { menus, activeFirstLevelMenuKey, setActiveFirstLevelMenuKey, getActiveFirstLevelMenuKey } = useMixMenuContext();
 
@@ -31,7 +32,9 @@ function handleSelectMixMenu(menu: App.Global.Menu) {
   if (menu.children?.length) {
     setDrawerVisible(true);
   } else {
-    routerPushByKey(menu.routeKey);
+    router.push({
+      name: menu.routeKey
+    });
   }
 }
 

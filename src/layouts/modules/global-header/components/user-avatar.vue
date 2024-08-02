@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import type { VNode } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/store/modules/auth';
-import { useRouterPush } from '@/hooks/common/router';
 import { useSvgIcon } from '@/hooks/common/icon';
 import { $t } from '@/locales';
+
+const router = useRouter();
 
 defineOptions({
   name: 'UserAvatar'
 });
 
 const authStore = useAuthStore();
-const { routerPushByKey, toLogin } = useRouterPush();
 const { SvgIconVNode } = useSvgIcon();
 
 function loginOrRegister() {
-  toLogin();
+  router.push({
+    name: 'login'
+  });
 }
 
 type DropdownKey = 'user-center' | 'logout';
@@ -68,7 +71,9 @@ function handleDropdown(key: DropdownKey) {
   if (key === 'logout') {
     logout();
   } else {
-    routerPushByKey(key);
+    router.push({
+      name: key
+    });
   }
 }
 </script>

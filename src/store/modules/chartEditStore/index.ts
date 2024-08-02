@@ -94,22 +94,18 @@ export const useChartEditStore = defineStore('chartEditStore', () => {
     ]
   });
 
-  function setDragData(data) {
-    dragData.value = data;
-  }
-
-  function addComponentList(data) {
+  function addComponentList(data: any) {
     designData.componentList.push(data);
   }
 
-  function removeComponent(id) {
+  function removeComponent(id: number) {
     const index = designData.componentList.findIndex(item => item.id === id);
     if (index !== -1) {
       designData.componentList.splice(index, 1);
     }
   }
 
-  function updateComponent(index, data) {
+  function updateComponent(index: number, data: any) {
     designData.componentList[index] = {
       ...designData.componentList[index],
       ...data
@@ -120,7 +116,6 @@ export const useChartEditStore = defineStore('chartEditStore', () => {
     designData,
     dragData,
     selectComponent,
-    setDragData,
     addComponentList,
     removeComponent,
     updateComponent

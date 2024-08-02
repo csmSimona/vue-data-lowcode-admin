@@ -1,7 +1,9 @@
 <script setup lang="jsx">
+import { useRoute } from 'vue-router';
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useChartEditStore } from '@/store/modules/chartEditStore';
 
+const route = useRoute();
 const chartEditStore = useChartEditStore();
 const { canvasConfig, componentList } = chartEditStore.designData;
 const scale = ref(1);
@@ -16,6 +18,10 @@ const updateScale = () => {
 };
 
 onMounted(() => {
+  if (route.query?.type === 'view') {
+    // TODO 通过id获取大屏配置数据
+    console.log('route', route.query.id);
+  }
   window.addEventListener('resize', updateScale);
 });
 

@@ -1,13 +1,14 @@
 <script setup lang="jsx">
 import { reactive, ref, watch } from 'vue';
 import { NButton, useDialog, useMessage } from 'naive-ui';
+import { useRouter } from 'vue-router';
 import { fetchGetRoleList } from '@/service/api';
-import { useRouterPush } from '@/hooks/common/router';
+import bg from '@/assets/bg.jpg';
 
 const message = useMessage();
 const dialog = useDialog();
+const router = useRouter();
 
-const { routerPushByKey } = useRouterPush();
 const pageSize = 11;
 const page = ref(1);
 const loading = ref(false);
@@ -38,21 +39,12 @@ watch(
 
 // 预览大屏
 function handlePreview(id) {
-  routerPushByKey('preview', {
-    query: {
-      id,
-      type: 'view'
-    }
-  });
+  router.push(`/preview?id=${id}&type=view`);
 }
 
 // 编辑大屏
 function handleEdit(id) {
-  routerPushByKey('designer', {
-    query: {
-      id
-    }
-  });
+  router.push(`/designer?id=${id}`);
 }
 
 // 删除大屏
@@ -76,7 +68,7 @@ function handleDelete(id) {
   <div>
     <NCard :bordered="false" size="small" class="mt-10px card-wrapper">
       <!--
- <NButton type="primary" class="mb-16px mr-20px" @click="routerPushByKey('designer')">
+ <NButton type="primary" class="mb-16px mr-20px" @click="router.push('designer')">
         <template #icon>
           <icon-ic-round-plus class="text-icon" />
         </template>
@@ -85,7 +77,7 @@ function handleDelete(id) {
 -->
       <NSpin :show="loading">
         <div class="recordBox">
-          <div class="recordCard" @click="routerPushByKey('designer')">
+          <div class="recordCard" @click="router.push('/designer')">
             <div class="add">
               <icon-ic-round-plus class="text-icon" />
               新增大屏
@@ -160,8 +152,16 @@ function handleDelete(id) {
     justify-content: space-evenly;
     color: #000;
   }
-  .action:hover {
-    color: #646cff;
+
+  .action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: rgb(100, 108, 255, 0.8);
+    border-radius: 50%;
+    color: #fff;
   }
 
   .recordCard:hover .mask {

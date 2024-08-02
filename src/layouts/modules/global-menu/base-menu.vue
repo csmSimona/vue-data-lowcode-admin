@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import type { MentionOption, MenuProps } from 'naive-ui';
 import { SimpleScrollbar } from '@sa/materials';
 import type { RouteKey } from '@elegant-router/types';
 import { useAppStore } from '@/store/modules/app';
 import { useThemeStore } from '@/store/modules/theme';
 import { useRouteStore } from '@/store/modules/route';
-import { useRouterPush } from '@/hooks/common/router';
+
+const router = useRouter();
 
 defineOptions({
   name: 'BaseMenu'
@@ -27,7 +28,6 @@ const route = useRoute();
 const appStore = useAppStore();
 const themeStore = useThemeStore();
 const routeStore = useRouteStore();
-const { routerPushByKey } = useRouterPush();
 
 const naiveMenus = computed(() => props.menus as unknown as MentionOption[]);
 
@@ -59,7 +59,10 @@ function updateExpandedKeys() {
 function handleClickMenu(key: RouteKey) {
   const query = routeStore.getRouteQueryOfMetaByKey(key);
 
-  routerPushByKey(key, { query });
+  router.push({
+    name: key,
+    query
+  });
 }
 
 watch(
