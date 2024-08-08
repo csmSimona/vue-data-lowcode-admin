@@ -15,7 +15,7 @@ const props = withDefaults(
     height: '100%',
     language: 'javascript',
     editorOption: () => ({}),
-    modelValue: ''
+    modelValue: '',
   }
 );
 
@@ -27,11 +27,13 @@ const emit = defineEmits<{
 const monacoEditorStyle = computed(() => {
   return {
     width: typeof props.width === 'string' ? props.width : `${props.width}px`,
-    height: typeof props.height === 'string' ? props.height : `${props.height}px`
+    height: typeof props.height === 'string' ? props.height : `${props.height}px`,
   };
 });
 
-const { monacoEditorRef, createEditor, updateVal, updateOptions, getEditor } = useMonacoEditor(props.language);
+const { monacoEditorRef, createEditor, updateVal, updateOptions, getEditor } = useMonacoEditor(
+  props.language
+);
 
 onMounted(() => {
   const monacoEditor = createEditor(props.editorOption);
@@ -61,5 +63,5 @@ defineExpose({ updateOptions });
 </script>
 
 <template>
-  <div ref="monacoEditorRef" :style="monacoEditorStyle"></div>
+  <div ref="monacoEditorRef" :style="monacoEditorStyle" />
 </template>

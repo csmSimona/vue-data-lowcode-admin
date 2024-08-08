@@ -2,8 +2,8 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import throttle from 'lodash/throttle';
 import { useRouter } from 'vue-router';
-import { useChartEditStore } from '@/store/modules/chartEditStore';
-import { createImg } from '@/utils/utils';
+import { useChartEditStore } from '@/store/modules/chartEdit';
+import { createImg } from '@/utils';
 
 const router = useRouter();
 
@@ -67,16 +67,26 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('keydown', handleEvent);
 });
+
+
+// 预览大屏
+function handlePreview() {
+  // const href = router.resolve({
+  //     path: '/preview/view',
+  //  })
+  // window.open(href.href, '_blank')
+
+  router.push('/preview')
+}
 </script>
 
 <template>
-  <div class="header-wrapper h-50px">
+  <div class="header-wrapper h-[50px]">
     <NButton @click="router.push('/cockpit-manage')">返回</NButton>
     <div>大屏设计器</div>
     <div class="flex gap-4">
       <NButton type="primary" :loading="loading" @click="handleSave">保存</NButton>
-      <NButton @click="router.push('/preview')">预览</NButton>
-      <NButton>发布</NButton>
+      <NButton @click="handlePreview">预览</NButton>
     </div>
   </div>
 </template>

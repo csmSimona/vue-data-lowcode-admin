@@ -1,7 +1,7 @@
 <script setup lang="jsx">
 import { useRoute } from 'vue-router';
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
-import { useChartEditStore } from '@/store/modules/chartEditStore';
+import { useChartEditStore } from '@/store/modules/chartEdit';
 
 const route = useRoute();
 const chartEditStore = useChartEditStore();
@@ -46,12 +46,17 @@ watch(
   <div
     class="edit-content-wrapper"
     :style="{
-      background: canvasConfig.backgroundType === 'color' ? canvasConfig.backgroundColor : `transparent`
+      background:
+        canvasConfig.backgroundType === 'color' ? canvasConfig.backgroundColor : `transparent`,
+      // background:
+      //   canvasConfig.backgroundType === 'color'
+      //     ? canvasConfig.backgroundColor
+      //     : `url(${canvasConfig.backgroundImageUrl}) no-repeat 100% 100%`,
     }"
   >
     <div
       :style="{
-        transform: `scale(${scale})`
+        transform: `scale(${scale})`,
       }"
     >
       <div
@@ -62,7 +67,7 @@ watch(
           background:
             canvasConfig.backgroundType === 'color'
               ? canvasConfig.backgroundColor
-              : `url(${canvasConfig.backgroundImageUrl}) no-repeat 100% 100%`
+              : `url(${canvasConfig.backgroundImageUrl}) no-repeat 100% 100%`,
         }"
       >
         <div
@@ -73,7 +78,7 @@ watch(
             top: item.y + 'px',
             left: item.x + 'px',
             width: item.width + 'px',
-            height: item.height + 'px'
+            height: item.height + 'px',
           }"
         >
           <component

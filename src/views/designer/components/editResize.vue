@@ -1,6 +1,6 @@
 <!-- eslint-disable no-nested-ternary -->
 <script setup lang="jsx">
-import { useChartEditStore } from '@/store/modules/chartEditStore';
+import { useChartEditStore } from '@/store/modules/chartEdit';
 
 const chartEditStore = useChartEditStore();
 
@@ -110,9 +110,9 @@ function handleMouseDown(e, point) {
     :class="`shape-point ${point}`"
     :style="getPointStyle(point, index)"
     @mousedown="handleMouseDown($event, point)"
-  ></div>
+  />
 
-  <slot></slot>
+  <slot />
 </template>
 
 <style scoped lang="scss">

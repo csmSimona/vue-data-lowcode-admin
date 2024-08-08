@@ -1,7 +1,7 @@
 <script setup lang="jsx">
 import { ref } from 'vue';
 import { useMessage } from 'naive-ui';
-import { useChartEditStore } from '@/store/modules/chartEditStore';
+import { useChartEditStore } from '@/store/modules/chartEdit';
 
 const message = useMessage();
 const chartEditStore = useChartEditStore();
@@ -58,7 +58,9 @@ const customRequest = ({ file, withCredentials, action, onFinish, onError, onPro
     <NFormItemRow label="名称" path="name">
       <NInput v-model:value="canvasConfig.name" />
     </NFormItemRow>
-    <NFormItemRow label="宽度" path="width"><NInputNumber v-model:value="canvasConfig.width" :min="50" /></NFormItemRow>
+    <NFormItemRow label="宽度" path="width"
+      ><NInputNumber v-model:value="canvasConfig.width" :min="50"
+    /></NFormItemRow>
     <NFormItemRow label="高度" path="height">
       <NInputNumber v-model:value="canvasConfig.height" :min="50" />
     </NFormItemRow>

@@ -1,3 +1,4 @@
+// 直角坐标系通用配置
 export const commonOption = {
   // 轴是否展示
   xAxisShow: true,

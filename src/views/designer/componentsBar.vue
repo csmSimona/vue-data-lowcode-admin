@@ -1,6 +1,11 @@
 <script setup lang="jsx">
-import { ChartList } from '@/components/charts';
-import { useChartEditStore } from '@/store/modules/chartEditStore';
+import { ChartList } from '@/components/Charts';
+import { useChartEditStore } from '@/store/modules/chartEdit';
+import {
+  CopyOutlined,
+  DeleteOutlined
+} from '@vicons/antd';
+
 const chartEditStore = useChartEditStore();
 const { selectComponent, dragData } = chartEditStore;
 const { componentList } = chartEditStore.designData;
@@ -47,15 +52,22 @@ function handleDelete(e, item) {
 </script>
 
 <template>
-  <div class="w-200px">
+  <div class="w-[200px]">
     <NTabs default-value="signin" size="large" justify-content="space-evenly">
-      <NTabPane name="signin" tab="组件" class="configPaneWrapper flex flex-wrap justify-evenly">
+      <NTabPane name="signin" tab="组件" class="configPaneWrapper">
         <!-- TODO 组件库样式修改 -->
-        <div v-for="item in ChartList" :key="item.chartKey">
-          <NButton draggable="true" @dragstart="e => dragStart(e, item)" @dblclick="dblclickHandle(item)">
-            {{ item.chartName }}
-          </NButton>
-        </div>
+        <n-grid :x-gap="10" :y-gap="10" :cols="2">
+          <n-grid-item v-for="item in ChartList" :key="item.chartKey">
+            <NButton
+              draggable="true"
+              @dragstart="(e) => dragStart(e, item)"
+              @dblclick="dblclickHandle(item)"
+              :style="{ width: '100%' }"
+            >
+              {{ item.chartName }}
+            </NButton>
+          </n-grid-item>
+        </n-grid>
       </NTabPane>
       <NTabPane name="signup" tab="图层" class="configPaneWrapper">
         <div v-for="item in componentList" :key="item.id" class="w-full">
@@ -68,8 +80,16 @@ function handleDelete(e, item) {
               {{ item.chartName }}
             </span>
             <div class="toolBox">
-              <icon-material-symbols-content-copy-outline class="text-icon" @click="e => handleCopy(e, item)" />
-              <icon-material-symbols-delete-outline-sharp class="text-icon" @click="e => handleDelete(e, item)" />
+              <n-icon
+                class="text-icon"
+                :component="CopyOutlined"
+                @click="(e) => handleCopy(e, item)"
+              />
+              <n-icon
+                class="text-icon"
+                :component="DeleteOutlined"
+                @click="(e) => handleDelete(e, item)"
+              />
             </div>
           </div>
         </div>

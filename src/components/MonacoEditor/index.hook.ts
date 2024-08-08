@@ -1,7 +1,7 @@
 import * as monaco from 'monaco-editor';
 import { nextTick, onBeforeUnmount, ref } from 'vue';
 
-export function useMonacoEditor(language: string = 'javascript') {
+export function useMonacoEditor(language = 'javascript') {
   // 编辑器示例
   let monacoEditor: monaco.editor.IStandaloneCodeEditor | null = null;
   // 目标元素

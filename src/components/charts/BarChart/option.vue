@@ -15,9 +15,24 @@ const chartConfig = computed(() => {
 </script>
 
 <template>
+  <!-- <CollapseItem name="距离">
+    <NFormItemRow label="上" path="top">
+      <NInputNumber v-model:value="chartConfig.grid.top" class="w-full" />
+    </NFormItemRow>
+    <NFormItemRow label="下" path="bottom">
+      <NInputNumber v-model:value="chartConfig.grid.bottom" class="w-full" />
+    </NFormItemRow>
+    <NFormItemRow label="左" path="left">
+      <NInputNumber v-model:value="chartConfig.grid.left" class="w-full" />
+    </NFormItemRow>
+    <NFormItemRow label="右" path="right">
+      <NInputNumber v-model:value="chartConfig.grid.right" class="w-full" />
+    </NFormItemRow>
+  </CollapseItem> -->
+
   <CollapseItem name="X轴">
     <template #header>
-      <NSwitch v-model:value="chartConfig.xAxisShow" size="small"></NSwitch>
+      <NSwitch v-model:value="chartConfig.xAxisShow" size="small" />
     </template>
 
     <NFormItemRow label="展示轴线" path="xLineShow">
@@ -47,7 +62,7 @@ const chartConfig = computed(() => {
 
   <CollapseItem name="Y轴">
     <template #header>
-      <NSwitch v-model:value="chartConfig.yAxisShow" size="small"></NSwitch>
+      <NSwitch v-model:value="chartConfig.yAxisShow" size="small" />
     </template>
 
     <NFormItemRow label="展示轴线" path="yLineShow">

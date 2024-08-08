@@ -1,30 +1,59 @@
-import type { App } from 'vue';
-import {
-  type RouterHistory,
-  createMemoryHistory,
-  createRouter,
-  createWebHashHistory,
-  createWebHistory
-} from 'vue-router';
-import { createBuiltinVueRoutes } from './routes/builtin';
-import { createRouterGuard } from './guard';
+import { App } from 'vue';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { RedirectRoute } from '@/router/base';
+import { PageEnum } from '@/enums/pageEnum';
+import { createRouterGuards } from './guards';
+import type { IModuleType } from './types';
 
-const { VITE_ROUTER_HISTORY_MODE = 'history', VITE_BASE_URL } = import.meta.env;
+const modules = import.meta.glob<IModuleType>('./modules/**/*.ts', { eager: true });
 
-const historyCreatorMap: Record<Env.RouterHistoryMode, (base?: string) => RouterHistory> = {
-  hash: createWebHashHistory,
-  history: createWebHistory,
-  memory: createMemoryHistory
+const routeModuleList: RouteRecordRaw[] = Object.keys(modules).reduce((list, key) => {
+  const mod = modules[key].default ?? {};
+  const modList = Array.isArray(mod) ? [...mod] : [mod];
+  return [...list, ...modList];
+}, []);
+
+function sortRoute(a, b) {
+  return (a.meta?.sort ?? 0) - (b.meta?.sort ?? 0);
+}
+
+routeModuleList.sort(sortRoute);
+
+export const RootRoute: RouteRecordRaw = {
+  path: '/',
+  name: 'Root',
+  redirect: PageEnum.BASE_HOME,
+  meta: {
+    title: 'Root',
+  },
 };
 
-export const router = createRouter({
-  history: historyCreatorMap[VITE_ROUTER_HISTORY_MODE](VITE_BASE_URL),
-  routes: createBuiltinVueRoutes()
+export const LoginRoute: RouteRecordRaw = {
+  path: '/login',
+  name: 'Login',
+  component: () => import('@/views/login/index.vue'),
+  meta: {
+    title: '登录',
+  },
+};
+
+//需要验证权限
+export const asyncRoutes = [...routeModuleList];
+
+//普通路由 无需验证权限
+export const constantRouter: RouteRecordRaw[] = [LoginRoute, RootRoute, RedirectRoute];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: constantRouter,
+  strict: true,
+  scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 
-/** Setup Vue Router */
-export async function setupRouter(app: App) {
+export function setupRouter(app: App) {
   app.use(router);
-  createRouterGuard(router);
-  await router.isReady();
+  // 创建路由守卫
+  createRouterGuards(router);
 }
+
+export default router;

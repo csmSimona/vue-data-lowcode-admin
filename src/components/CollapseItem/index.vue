@@ -3,13 +3,13 @@
 defineProps({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   expanded: {
     type: Boolean,
     required: false,
-    default: true
-  }
+    default: true,
+  },
 });
 
 const click = (e: MouseEvent) => {
@@ -23,13 +23,13 @@ const click = (e: MouseEvent) => {
     <!-- 右侧 -->
     <template #header-extra>
       <div @click="click">
-        <slot name="header"></slot>
+        <slot name="header" />
       </div>
     </template>
 
     <NCollapseItem :title="name" :name="name">
-      <slot></slot>
+      <slot />
     </NCollapseItem>
   </NCollapse>
-  <NDivider></NDivider>
+  <NDivider />
 </template>

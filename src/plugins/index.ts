@@ -1,6 +1,5 @@
-export * from './loading';
-export * from './nprogress';
-export * from './iconify';
-export * from './dayjs';
-export * from './app';
-export * from './customComponents';
+export { setupNaive } from '@/plugins/naive';
+export { setupNaiveDiscreteApi } from '@/plugins/naiveDiscreteApi';
+export { setupDirectives } from '@/plugins/directives';
+export { setupCustomComponents } from '@/plugins/customComponents';
+export { setupGlobalMethods } from '@/plugins/globalMethods';

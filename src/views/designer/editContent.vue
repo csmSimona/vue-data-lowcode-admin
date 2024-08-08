@@ -1,8 +1,12 @@
 <script setup lang="jsx">
 import { computed, onMounted, ref } from 'vue';
-import { useChartEditStore } from '@/store/modules/chartEditStore';
+import { useChartEditStore } from '@/store/modules/chartEdit';
 import EditRule from './components/editRule.vue';
 import EditResize from './components/editResize.vue';
+import {
+  CopyOutlined,
+  DeleteOutlined
+} from '@vicons/antd';
 
 const chartEditStore = useChartEditStore();
 const { dragData, selectComponent } = chartEditStore;
@@ -16,9 +20,11 @@ onMounted(() => {
   //   console.log('key', key)
   //   window['$vue'].component(key, node)
   // }
+
 });
 
 const canvasScale = computed(() => (editRuleRef.value ? editRuleRef.value.canvasScale : 0.4));
+const computedFontSize = computed(() => (12 / canvasScale.value) + 'px');
 
 // 组件库组件拖拽放入画布
 function drop(e) {
@@ -87,7 +93,7 @@ function handleMouseDown(e, item, index) {
 </script>
 
 <template>
-  <div class="edit-content-wrapper flex-1">
+  <div class="edit-content-wrapper">
     <EditRule ref="editRuleRef" :width="canvasConfig.width" :height="canvasConfig.height">
       <div
         class="web-container"
@@ -97,9 +103,9 @@ function handleMouseDown(e, item, index) {
           background:
             canvasConfig.backgroundType === 'color'
               ? canvasConfig.backgroundColor
-              : `url(${canvasConfig.backgroundImageUrl}) no-repeat 100% 100%`
+              : `url(${canvasConfig.backgroundImageUrl}) no-repeat 100% 100%`,
         }"
-        @dragover="e => e.preventDefault()"
+        @dragover="(e) => e.preventDefault()"
         @drop="drop"
         @click="handleClickBlank"
       >
@@ -111,16 +117,35 @@ function handleMouseDown(e, item, index) {
             top: item.y + 'px',
             left: item.x + 'px',
             width: item.width + 'px',
-            height: item.height + 'px'
+            height: item.height + 'px',
           }"
-          @click="e => handleSelectItem(e, item)"
-          @mousedown="e => handleMouseDown(e, item, index)"
+          @click="(e) => handleSelectItem(e, item)"
+          @mousedown="(e) => handleMouseDown(e, item, index)"
         >
-          <EditResize :item="item" :i="index" :selected="selectComponent.value?.id === item.id" :scale="canvasScale">
-            <div class="activeMask" :class="selectComponent.value?.id === item.id ? 'selectMask' : ''" />
-            <div class="toolBox" :class="selectComponent.value?.id === item.id ? 'selectToolBox' : ''">
-              <icon-material-symbols-content-copy-outline class="text-icon" @click="e => handleCopy(e, item)" />
-              <icon-material-symbols-delete-outline-sharp class="text-icon" @click="e => handleDelete(e, item)" />
+          <EditResize
+            :item="item"
+            :i="index"
+            :selected="selectComponent.value?.id === item.id"
+            :scale="canvasScale"
+          >
+            <div
+              class="activeMask"
+              :class="selectComponent.value?.id === item.id ? 'selectMask' : ''"
+            />
+            <div
+              class="toolBox"
+              :class="selectComponent.value?.id === item.id ? 'selectToolBox' : ''"
+            >
+              <n-icon
+                class="text-icon"
+                :component="CopyOutlined"
+                @click="(e) => handleCopy(e, item)"
+              />
+              <n-icon
+                class="text-icon"
+                :component="DeleteOutlined"
+                @click="(e) => handleDelete(e, item)"
+              />
             </div>
             <component
               :is="item.chartKey"
@@ -139,6 +164,7 @@ function handleMouseDown(e, item, index) {
 
 <style scoped>
 .edit-content-wrapper {
+  flex: 1;
   border-left: 1px solid #d9d9d9;
   border-right: 1px solid #d9d9d9;
   position: relative;
@@ -157,7 +183,7 @@ function handleMouseDown(e, item, index) {
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 999;
+  /* z-index: 999; */
   cursor: move;
 }
 
@@ -182,5 +208,6 @@ function handleMouseDown(e, item, index) {
 .text-icon {
   cursor: pointer;
   z-index: 1000;
+  font-size: v-bind(computedFontSize);
 }
 </style>

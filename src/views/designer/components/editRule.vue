@@ -6,12 +6,12 @@ import { computed, defineExpose, nextTick, onMounted, reactive, ref, toRef, watc
 const props = defineProps({
   width: {
     type: Number,
-    default: 1920
+    default: 1920,
   },
   height: {
     type: Number,
-    default: 1080
-  }
+    default: 1080,
+  },
 });
 
 const step = 0.01;
@@ -27,7 +27,7 @@ const state = reactive({
   // 参考线
   lines: {
     h: [],
-    v: []
+    v: [],
     // h: [0, 1920],
     // v: [0, 1080]
   },
@@ -38,11 +38,11 @@ const state = reactive({
     fontColor: '#4d4d4d',
     shadowColor: '#18181c',
     borderColor: '#18181c',
-    cornerActiveColor: '#18181c'
+    cornerActiveColor: '#18181c',
   },
   thick: 20,
   isShowRuler: true, // 显示标尺
-  isShowReferLine: true // 显示参考线
+  isShowReferLine: true, // 显示参考线
 });
 
 const shadow = computed(() => {
@@ -50,10 +50,11 @@ const shadow = computed(() => {
     x: 0,
     y: 0,
     width: props.width,
-    height: props.height
+    height: props.height,
   };
 });
 
+// 鼠标滚动监听
 const handleScroll = () => {
   const screensRect = document.querySelector('#screens').getBoundingClientRect();
   const canvasRect = document.querySelector('#canvas').getBoundingClientRect();
@@ -65,10 +66,12 @@ const handleScroll = () => {
 };
 
 // ctrl+鼠标滚动控制缩放值
-const handleWheel = e => {
+const handleWheel = (e) => {
   if (e.ctrlKey || e.metaKey) {
     e.preventDefault();
-    const nextScale = Number.parseFloat(Math.max(0.05, state.scale - e.deltaY / 500).toFixed(2));
+    const nextScale = Number.parseFloat(
+      Math.max(minScale, state.scale - e.deltaY / 500).toFixed(2)
+    );
     state.scale = nextScale > maxScale ? maxScale : nextScale;
   }
   nextTick(() => {
@@ -82,7 +85,7 @@ const cpuScale = computed(() => {
   return Number(num.toFixed(2));
 });
 
-// 滚动居中
+// 滚动条居中
 const canvasPosCenter = () => {
   const screensRect = screensRef.value.getBoundingClientRect();
   const containerRect = containerRef.value.getBoundingClientRect();
@@ -91,7 +94,7 @@ const canvasPosCenter = () => {
 };
 
 // 进度条调整缩放
-const scaleChange = value => {
+const scaleChange = (value) => {
   state.scale = Number(value);
   nextTick(() => {
     handleScroll();
@@ -107,6 +110,7 @@ onMounted(() => {
   canvasPosCenter();
 });
 
+// 监听设置的大屏宽高自动计算缩放比例
 watch(
   () => [props.width, props.height],
   () => {
@@ -127,12 +131,12 @@ watch(
     });
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 
 defineExpose({
-  canvasScale: toRef(state, 'scale')
+  canvasScale: toRef(state, 'scale'),
 });
 </script>
 
@@ -161,7 +165,7 @@ defineExpose({
       :shadow="shadow"
       :is-show-refer-line="state.isShowReferLine"
       :lines="state.lines"
-    ></SketchRule>
+    />
 
     <div id="screens" ref="screensRef" @wheel="handleWheel" @scroll="handleScroll">
       <div
@@ -169,7 +173,7 @@ defineExpose({
         class="screen-container"
         :style="{
           width: `${width * maxScale}px`,
-          height: `${height * maxScale}px`
+          height: `${height * maxScale}px`,
         }"
       >
         <div
@@ -177,10 +181,10 @@ defineExpose({
           :style="{
             width: width + 'px',
             height: height + 'px',
-            transform: `scale(${state.scale})`
+            transform: `scale(${state.scale})`,
           }"
         >
-          <slot></slot>
+          <slot />
         </div>
       </div>
     </div>

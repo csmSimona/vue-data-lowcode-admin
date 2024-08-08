@@ -1,40 +1,43 @@
-<script setup lang="ts">
-import { computed } from 'vue';
-import { NConfigProvider, darkTheme } from 'naive-ui';
-import { useAppStore } from './store/modules/app';
-import { useThemeStore } from './store/modules/theme';
-import { naiveDateLocales, naiveLocales } from './locales/naive';
-
-defineOptions({
-  name: 'App'
-});
-
-const appStore = useAppStore();
-const themeStore = useThemeStore();
-
-const naiveDarkTheme = computed(() => (themeStore.darkMode ? darkTheme : undefined));
-
-const naiveLocale = computed(() => {
-  return naiveLocales[appStore.locale];
-});
-
-const naiveDateLocale = computed(() => {
-  return naiveDateLocales[appStore.locale];
-});
-</script>
-
 <template>
   <NConfigProvider
-    :theme="naiveDarkTheme"
-    :theme-overrides="themeStore.naiveTheme"
-    :locale="naiveLocale"
-    :date-locale="naiveDateLocale"
-    class="h-full"
+    :locale="zhCN"
+    :theme="getDarkTheme"
+    :theme-overrides="getThemeOverrides"
+    :date-locale="dateZhCN"
   >
     <AppProvider>
-      <RouterView class="bg-layout" />
+      <RouterView />
     </AppProvider>
   </NConfigProvider>
 </template>
 
-<style scoped></style>
+<script lang="ts" setup>
+import { computed } from 'vue';
+import { zhCN, dateZhCN, darkTheme } from 'naive-ui';
+import { AppProvider } from '@/components/Application';
+import { useDesignSettingStore } from '@/store/modules/designSetting';
+import { lighten } from '@/utils/index';
+
+const designStore = useDesignSettingStore();
+
+/**
+ * @type import('naive-ui').GlobalThemeOverrides
+ */
+const getThemeOverrides = computed(() => {
+  const appTheme = designStore.appTheme;
+  const lightenStr = lighten(designStore.appTheme, 6);
+  return {
+    common: {
+      primaryColor: appTheme,
+      primaryColorHover: lightenStr,
+      primaryColorPressed: lightenStr,
+      primaryColorSuppl: appTheme,
+    },
+    LoadingBar: {
+      colorLoading: appTheme,
+    },
+  };
+});
+
+const getDarkTheme = computed(() => (designStore.darkTheme ? darkTheme : undefined));
+</script>
