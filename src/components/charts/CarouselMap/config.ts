@@ -54,11 +54,14 @@ const chartOption = {
   titleFontSize: 18,
   // 自动轮播
   autoPlay: true,
-  interval: 3000
+  interval: 3000,
+  // 自定义投影
+  showProjection: false,
+  projectionType: 'custom'
 };
 
 const chartConfig = {
-  chartKey: 'TooltipMap',
+  chartKey: 'CarouselMap',
   chartName: '自动轮播地图',
   width: 700,
   height: 700,

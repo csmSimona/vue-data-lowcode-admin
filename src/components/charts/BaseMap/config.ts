@@ -52,6 +52,12 @@ const chartOption = {
   titleY: 'top',
   titleColor: '#ccc',
   titleFontSize: 18,
+  // 自动轮播
+  autoPlay: false,
+  interval: 3000,
+  // 自定义投影
+  showProjection: false,
+  projectionType: 'custom'
 };
 
 const chartConfig = {

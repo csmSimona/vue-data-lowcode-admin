@@ -108,6 +108,18 @@
     },
   ]
 
+  // 投影类型
+  const projectionTypeOptions = [
+    {
+      label: '自定义投影',
+      value: 'custom',
+    },
+    {
+      label: '墨卡托投影',
+      value: 'Mercator',
+    },
+  ];
+
   // 新增颜色
   const addColor = (index) => {
     chartConfig.value.colorRange.splice(index + 1, 0, '#ffffff')
@@ -230,6 +242,22 @@
     </NFormItemRow>
     <NFormItemRow label="鼠标悬停聚焦" path="emphasisAreaColor">
       <NColorPicker v-model:value="chartConfig.emphasisAreaColor" />
+    </NFormItemRow>
+
+    <NFormItemRow label="自动轮播" path="autoPlay">
+      <NSwitch v-model:value="chartConfig.autoPlay" size="small" />
+    </NFormItemRow>
+    <NFormItemRow label="轮播间隔" path="interval">
+      <NInputNumber v-model:value="chartConfig.interval" :min="1000" class="w-full">
+        <template #suffix> 毫秒 </template>
+      </NInputNumber>
+    </NFormItemRow>
+
+    <NFormItemRow label="地图投影" path="showProjection">
+      <NSwitch v-model:value="chartConfig.showProjection" size="small" />
+    </NFormItemRow>
+    <NFormItemRow label="投影类型" path="projectionType">
+      <NSelect v-model:value="chartConfig.projectionType" :options="projectionTypeOptions" />
     </NFormItemRow>
   </CollapseItem>
 

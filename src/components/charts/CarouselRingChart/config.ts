@@ -20,13 +20,13 @@ const chartOption = {
   legendTextColor: '#ddd',
   legendFontSize: 12,
   // 文本标签
-  labelPosition: 'outside',
-  labelFontSize: 12,
+  labelPosition: 'center',
+  labelFontSize: 18,
   labelColor: '#ddd',
-  labelShowType: 'name',
+  labelShowType: 'data',
   // 图表
   startAngle: 90,
-  radiusInside: 0,
+  radiusInside: 40,
   radiusOutside: 60,
   roseType: 'false',
   borderRadius: 0,
@@ -35,7 +35,7 @@ const chartOption = {
   // 饼图颜色
   pieColor: ['#91cc75', '#fac858', '#ee6666', '#73c0de', '#5470c6', '#ff8c71'],
   // 自动轮播
-  autoPlay: false,
+  autoPlay: true,
   // 轮播间隔
   interval: 3000,
   // 轮播显示提示
@@ -43,8 +43,8 @@ const chartOption = {
 };
 
 const chartConfig = {
-  chartKey: 'PieChart',
-  chartName: '饼图',
+  chartKey: 'CarouselRingChart',
+  chartName: '自动轮播环图',
   width: 500,
   height: 400,
   chartOption,

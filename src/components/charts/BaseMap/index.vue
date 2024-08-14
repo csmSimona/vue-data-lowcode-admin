@@ -1,11 +1,11 @@
 <!-- eslint-disable vue/require-default-prop -->
 <script setup>
-import { defineProps, nextTick, onMounted, onUnmounted, watch } from 'vue';
+import { defineProps, nextTick, onMounted, onUnmounted, watch, ref } from 'vue';
 import * as echarts from 'echarts';
 import { useMessage } from 'naive-ui';
-// import textureImg from "@/assets/texture.webp";
 
 const message = useMessage();
+const tooltipIntervalRef = ref(null);
 
 const props = defineProps({
   id: {
@@ -83,17 +83,21 @@ function initChart() {
   };
   loadChart();
 }
+const mapProject = (point) => {
+  switch (props.chartOption.projectionType) {
+    case 'custom':
+      return [0.5 * point[0] + 0.5 * point[1], -0.4 * point[1] + 0.2 * point[0]];
+    case 'Mercator':
+      return [
+        (point[0] / 180) * Math.PI,
+        -Math.log(Math.tan((Math.PI / 2 + (point[1] / 180) * Math.PI) / 2)),
+      ];
+  }
+};
 
-// 投影地图
-// const isRotateMap = false;
-
-// const mapProject = (point) => {
-//   return [0.5 * point[0] + 0.5 * point[1], -0.4 * point[1] + 0.2 * point[0]];
-// };
-
-// const mapUnproject = (point) => {
-//   return [point[0], point[1]];
-// };
+const mapUnproject = (point) => {
+  return [point[0], point[1]];
+};
 
 // 加载图表配置和数据
 async function loadChart() {
@@ -133,7 +137,7 @@ async function loadChart() {
       calculable: false,
       inRange: {
         color: props.chartOption.colorRange,
-        symbolSize: [30, 100],
+        // symbolSize: [30, 100],
       },
     },
     geo: {
@@ -158,12 +162,12 @@ async function loadChart() {
         },
       },
       // 投影相关
-      // projection: isRotateMap
-      //   ? {
-      //       project: (point) => mapProject(point),
-      //       unproject: (point) => mapUnproject(point),
-      //     }
-      //   : null,
+      projection: props.chartOption.showProjection
+        ? {
+            project: (point) => mapProject(point),
+            unproject: (point) => mapUnproject(point),
+          }
+        : null,
     },
     series: [
       {
@@ -176,6 +180,79 @@ async function loadChart() {
   };
 
   myChart.setOption(option);
+
+  // 自动轮播
+  if (tooltipIntervalRef.value) clearInterval(tooltipIntervalRef.value);
+  if (props.chartOption.autoPlay) {
+    var count = 0;
+    var dataLength = option.series[0].data.length;
+
+    function highlight() {
+      myChart.dispatchAction({
+        type: 'downplay',
+        seriesIndex: 0,
+      });
+      myChart.dispatchAction({
+        type: 'highlight',
+        seriesIndex: 0,
+        dataIndex: count % dataLength,
+      });
+      myChart.dispatchAction({
+        type: 'showTip',
+        seriesIndex: 0,
+        dataIndex: count % dataLength,
+      });
+      count++;
+    }
+    highlight();
+    tooltipIntervalRef.value = setInterval(function () {
+      highlight();
+    }, props.chartOption.interval);
+
+    myChart.on('mouseover', function (params) {
+      tooltipIntervalRef.value && clearInterval(tooltipIntervalRef.value);
+      myChart.dispatchAction({
+        type: 'downplay',
+        seriesIndex: 0,
+      });
+      myChart.dispatchAction({
+        type: 'highlight',
+        seriesIndex: 0,
+        dataIndex: params.dataIndex,
+      });
+      myChart.dispatchAction({
+        type: 'showTip',
+        seriesIndex: 0,
+        dataIndex: params.dataIndex,
+      });
+    });
+    myChart.on('mouseout', function (params) {
+      tooltipIntervalRef.value && clearInterval(tooltipIntervalRef.value);
+      tooltipIntervalRef.value = setInterval(function () {
+        myChart.dispatchAction({
+          type: 'downplay',
+          seriesIndex: 0,
+        });
+        myChart.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          dataIndex: count % dataLength,
+        });
+        myChart.dispatchAction({
+          type: 'showTip',
+          seriesIndex: 0,
+          dataIndex: count % dataLength,
+        });
+        count++;
+      }, props.chartOption.interval);
+    });
+  } else {
+    myChart.dispatchAction({
+      type: 'hideTip',
+    });
+    myChart.off('mouseover');
+    myChart.off('mouseout');
+  }
 }
 </script>
 

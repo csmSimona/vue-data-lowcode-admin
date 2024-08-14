@@ -26,7 +26,7 @@ const chartOption = {
   labelShowType: 'name',
   // 图表
   startAngle: 90,
-  radiusInside: 0,
+  radiusInside: 40,
   radiusOutside: 60,
   roseType: 'false',
   borderRadius: 0,
@@ -43,8 +43,8 @@ const chartOption = {
 };
 
 const chartConfig = {
-  chartKey: 'PieChart',
-  chartName: '饼图',
+  chartKey: 'RingChart',
+  chartName: '环图',
   width: 500,
   height: 400,
   chartOption,
