@@ -5,13 +5,14 @@ import {
   CopyOutlined,
   DeleteOutlined
 } from '@vicons/antd';
+import { cloneDeep } from 'lodash';
 
 const chartEditStore = useChartEditStore();
 const { selectComponent, dragData } = chartEditStore;
 const { componentList } = chartEditStore.designData;
 
 function dragStart(_, item) {
-  dragData.value = item;
+  dragData.value = cloneDeep(item);
 }
 
 // 鼠标双击添加图表实例
@@ -62,7 +63,12 @@ function handleDelete(e, item) {
               draggable="true"
               @dragstart="(e) => dragStart(e, item)"
               @dblclick="dblclickHandle(item)"
-              :style="{ width: '100%' }"
+              :style="{
+                width: '100%',
+                whiteSpace: 'break-spaces',
+                lineHeight: '16px',
+                fontSize: '12px',
+              }"
             >
               {{ item.chartName }}
             </NButton>

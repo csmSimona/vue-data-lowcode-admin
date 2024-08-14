@@ -39,7 +39,7 @@ const updateComponentData = () => {
       justify-content="space-evenly"
     >
       <NTabPane name="basic" tab="基础配置" class="configPaneWrapper">
-        <NForm label-placement="left" label-width="80" :model="selectComponent.value">
+        <NForm label-placement="left" label-width="60" :model="selectComponent.value">
           <NFormItemRow label="名称" path="name">
             <NInput v-model:value="selectComponent.value.chartName" />
           </NFormItemRow>
@@ -75,30 +75,6 @@ const updateComponentData = () => {
               class="w-full"
             />
           </NFormItemRow>
-          <NFormItemRow label="距离(上)" path="top">
-            <NInputNumber
-              v-model:value="selectComponent.value.chartOption.grid.top"
-              class="w-full"
-            />
-          </NFormItemRow>
-          <NFormItemRow label="距离(下)" path="bottom">
-            <NInputNumber
-              v-model:value="selectComponent.value.chartOption.grid.bottom"
-              class="w-full"
-            />
-          </NFormItemRow>
-          <NFormItemRow label="距离(左)" path="left">
-            <NInputNumber
-              v-model:value="selectComponent.value.chartOption.grid.left"
-              class="w-full"
-            />
-          </NFormItemRow>
-          <NFormItemRow label="距离(右)" path="right">
-            <NInputNumber
-              v-model:value="selectComponent.value.chartOption.grid.right"
-              class="w-full"
-            />
-          </NFormItemRow>
         </NForm>
       </NTabPane>
       <NTabPane name="chart" tab="图表" class="configPaneWrapper">
@@ -106,6 +82,7 @@ const updateComponentData = () => {
           <!-- 各图表实例相关配置 -->
           <component
             :is="selectComponent.value.chartKey + 'Option'"
+            :id="selectComponent.value.id"
             :config="selectComponent.value.chartOption"
           />
         </NForm>

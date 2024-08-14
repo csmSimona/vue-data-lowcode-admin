@@ -1,112 +1,160 @@
 <script setup lang="jsx">
-import { computed, defineProps } from 'vue';
-import CollapseItem from '@/components/CollapseItem/index.vue';
-import { DeleteOutlined } from '@vicons/antd';
+  import { computed, defineProps } from 'vue';
+  import CollapseItem from '@/components/CollapseItem/index.vue';
+  import {
+    DeleteOutlined,
+    AlignLeftOutlined,
+    AlignCenterOutlined,
+    AlignRightOutlined,
+    VerticalAlignTopOutlined,
+    VerticalAlignMiddleOutlined,
+    VerticalAlignBottomOutlined,
+    EditOutlined,
+    MinusCircleOutlined,
+    PlusCircleOutlined
+  } from '@vicons/antd';
 
-const props = defineProps({
-  config: {
-    type: Object,
-    default: () => {}
-  }
-});
+  const props = defineProps({
+    config: {
+      type: Object,
+      default: () => {},
+    },
+  });
 
-const chartConfig = computed(() => {
-  return props.config;
-});
+  const chartConfig = computed(() => {
+    return props.config;
+  });
 
+  // 图例布局方式
+  const legendOrientOptions = [
+    {
+      label: '横向',
+      value: 'horizontal',
+    },
+    {
+      label: '纵向',
+      value: 'vertical',
+    },
+  ];
 
-// 图例布局方式
-const legendOrientOptions = [
-  {
-    label: '横向',
-    value: 'horizontal'
-  },
-  {
-    label: '纵向',
-    value: 'vertical'
-  }
-]
+  // 图例位置x
+  const legendPositionXOptions = [
+    {
+      label: AlignLeftOutlined,
+      value: 'left',
+    },
+    {
+      label: AlignCenterOutlined,
+      value: 'center',
+    },
+    {
+      label: AlignRightOutlined,
+      value: 'right',
+    },
+    {
+      label: EditOutlined,
+      value: 'edit'
+    }
+  ];
 
-// 图例形状
-const legendIconOptions = [
-  {
-    label: '圆形',
-    value: 'circle'
-  },
-  {
-    label: '矩形',
-    value: 'rect'
-  },
-  {
-    label: '圆角矩形',
-    value: 'roundRect'
-  },
-  {
-    label: '三角形',
-    value: 'triangle'
-  },
-  {
-    label: '菱形',
-    value: 'diamond'
-  },
-]
+  // 图例位置y
+  const legendPositionYOptions = [
+    {
+      label: VerticalAlignTopOutlined,
+      value: 'top',
+    },
+    {
+      label: VerticalAlignMiddleOutlined,
+      value: 'center',
+    },
+    {
+      label: VerticalAlignBottomOutlined,
+      value: 'bottom',
+    },
+    {
+      label: EditOutlined,
+      value: 'edit'
+    }
+  ];
 
-// 文本标签位置
-const labelPositionOptions = [
-  {
-    label: '内部',
-    value: 'inside'
-  },
-  {
-    label: '外侧',
-    value: 'outside'
-  },
-  {
-    label: '中心',
-    value: 'center'
-  }
-]
-// 文本标签显示类型
-const labelShowTypeOptions = [
-  {
-    label: '仅名称',
-    value: 'name'
-  },
-  {
-    label: '数值',
-    value: 'data'
-  },
-  {
-    label: '百分比',
-    value: 'percent'
-  }
-]
+  // 图例形状
+  const legendIconOptions = [
+    {
+      label: '圆形',
+      value: 'circle',
+    },
+    {
+      label: '矩形',
+      value: 'rect',
+    },
+    {
+      label: '圆角矩形',
+      value: 'roundRect',
+    },
+    {
+      label: '三角形',
+      value: 'triangle',
+    },
+    {
+      label: '菱形',
+      value: 'diamond',
+    },
+  ];
 
+  // 文本标签位置
+  const labelPositionOptions = [
+    {
+      label: '内部',
+      value: 'inside',
+    },
+    {
+      label: '外侧',
+      value: 'outside',
+    },
+    {
+      label: '中心',
+      value: 'center',
+    },
+  ];
+  // 文本标签显示类型
+  const labelShowTypeOptions = [
+    {
+      label: '仅名称',
+      value: 'name',
+    },
+    {
+      label: '数值',
+      value: 'data',
+    },
+    {
+      label: '百分比',
+      value: 'percent',
+    },
+  ];
 
-// 南丁格尔图
-const roseTypeOptions = [
-  {
-    label: '不展示',
-    value: 'false'
-  },
-  {
-    label: '圆心角',
-    value: 'radius'
-  },
-  {
-    label: '扇区',
-    value: 'area'
-  }
-]
-// 新增颜色
-const addColor = (value) => {
-  chartConfig.value.pieColor.push(value)
-}
-// 删除颜色
-const delColor = (index) => {
-    chartConfig.value.pieColor.splice(index, 1);
-}
-
+  // 南丁格尔图
+  const roseTypeOptions = [
+    {
+      label: '不展示',
+      value: 'false',
+    },
+    {
+      label: '圆心角',
+      value: 'radius',
+    },
+    {
+      label: '扇区',
+      value: 'area',
+    },
+  ];
+  // 新增颜色
+  const addColor = (index) => {
+    chartConfig.value.pieColor.splice(index + 1, 0, '#ffffff')
+  };
+  // 删除颜色
+  const delColor = (index) => {
+    chartConfig.value.pieColor?.length > 1 && chartConfig.value.pieColor.splice(index, 1);
+  };
 </script>
 
 <template>
@@ -144,19 +192,21 @@ const delColor = (index) => {
     <NFormItemRow label="文本标签字号" path="labelFontSize">
       <NInputNumber v-model:value="chartConfig.labelFontSize" :min="10" class="w-full" />
     </NFormItemRow>
-    <NFormItemRow label="饼图颜色" path="pieColor">
-      <div>
-        <div
-          v-for="(item, index) in chartConfig.pieColor"
-          :key="index"
-          class="colorBlock"
-          :style="{ backgroundColor: item }"
-        >
-          <div class="delTag" @click="delColor(index)">
-            <n-icon :component="DeleteOutlined" />
-          </div>
+
+    <NFormItemRow label="饼图颜色">
+      <div class="flex flex-col w-full gap-[10px]">
+        <div v-for="(item, index) in chartConfig.pieColor" :key="index" class="flex items-center">
+          <NColorPicker v-model:value="chartConfig.pieColor[index]" />
+          <n-icon
+            :component="MinusCircleOutlined"
+            @click="delColor(index)"
+            class="action-icon"
+            :style="{
+              cursor: chartConfig.pieColor?.length > 1 ? 'pointer' : 'not-allowed',
+            }"
+          />
+          <n-icon :component="PlusCircleOutlined" @click="addColor(index)" class="action-icon" />
         </div>
-        <NColorPicker :on-complete="addColor" />
       </div>
     </NFormItemRow>
 
@@ -164,9 +214,9 @@ const delColor = (index) => {
       <NSwitch v-model:value="chartConfig.autoPlay" size="small" />
     </NFormItemRow>
     <NFormItemRow label="轮播间隔" path="interval">
-      <NInputNumber v-model:value="chartConfig.interval" :min="1000" class="w-full"
-        ><template #suffix> 毫秒 </template></NInputNumber
-      >
+      <NInputNumber v-model:value="chartConfig.interval" :min="1000" class="w-full">
+        <template #suffix> 毫秒 </template>
+      </NInputNumber>
     </NFormItemRow>
     <NFormItemRow label="轮播显示提示" path="showTooltip">
       <NSwitch v-model:value="chartConfig.showTooltip" size="small" />
@@ -184,10 +234,53 @@ const delColor = (index) => {
       <NSelect v-model:value="chartConfig.legendIcon" :options="legendIconOptions" />
     </NFormItemRow>
     <NFormItemRow label="图例位置(X)" path="legendX">
-      <NInput v-model:value="chartConfig.legendX" />
+      <div class="flex flex-col">
+        <n-radio-group v-model:value="chartConfig.legendX">
+          <n-radio-button
+            v-for="option in legendPositionXOptions"
+            :key="option.value"
+            :value="
+              option.value === 'edit'
+                ? isNaN(chartConfig.legendX)
+                  ? 0
+                  : chartConfig.legendX
+                : option.value
+            "
+          >
+            <n-icon :component="option.label" class="text-[14px]" />
+          </n-radio-button>
+        </n-radio-group>
+        <NInputNumber
+          v-if="!isNaN(chartConfig.legendX)"
+          v-model:value="chartConfig.legendX"
+          class="w-full mt-[10px]"
+        />
+      </div>
     </NFormItemRow>
+
     <NFormItemRow label="图例位置(Y)" path="legendY">
-      <NInput v-model:value="chartConfig.legendY" />
+      <div class="flex flex-col">
+        <n-radio-group v-model:value="chartConfig.legendY">
+          <n-radio-button
+            v-for="option in legendPositionYOptions"
+            :key="option.value"
+            :value="
+              option.value === 'edit'
+                ? isNaN(chartConfig.legendY)
+                  ? 0
+                  : chartConfig.legendY
+                : option.value
+            "
+          >
+            <n-icon :component="option.label" class="text-[14px]" />
+          </n-radio-button>
+        </n-radio-group>
+        <NInputNumber
+          v-if="!isNaN(chartConfig.legendY)"
+          v-model:value="chartConfig.legendY"
+          class="w-full mt-[10px]"
+        />
+      </div>
     </NFormItemRow>
     <NFormItemRow label="图例文本颜色" path="legendTextColor">
       <NColorPicker v-model:value="chartConfig.legendTextColor" />
@@ -206,10 +299,52 @@ const delColor = (index) => {
       <NInput v-model:value="chartConfig.text" />
     </NFormItemRow>
     <NFormItemRow label="标题位置(X)" path="titleX">
-      <NInput v-model:value="chartConfig.titleX" />
+      <div class="flex flex-col">
+        <n-radio-group v-model:value="chartConfig.titleX">
+          <n-radio-button
+            v-for="option in legendPositionXOptions"
+            :key="option.value"
+            :value="
+              option.value === 'edit'
+                ? isNaN(chartConfig.titleX)
+                  ? 0
+                  : chartConfig.titleX
+                : option.value
+            "
+          >
+            <n-icon :component="option.label" class="text-[14px]" />
+          </n-radio-button>
+        </n-radio-group>
+        <NInputNumber
+          v-if="!isNaN(chartConfig.titleX)"
+          v-model:value="chartConfig.titleX"
+          class="w-full mt-[10px]"
+        />
+      </div>
     </NFormItemRow>
     <NFormItemRow label="标题位置(Y)" path="titleY">
-      <NInput v-model:value="chartConfig.titleY" />
+      <div class="flex flex-col">
+        <n-radio-group v-model:value="chartConfig.titleY">
+          <n-radio-button
+            v-for="option in legendPositionYOptions"
+            :key="option.value"
+            :value="
+              option.value === 'edit'
+                ? isNaN(chartConfig.titleY)
+                  ? 0
+                  : chartConfig.titleY
+                : option.value
+            "
+          >
+            <n-icon :component="option.label" class="text-[14px]" />
+          </n-radio-button>
+        </n-radio-group>
+        <NInputNumber
+          v-if="!isNaN(chartConfig.titleY)"
+          v-model:value="chartConfig.titleY"
+          class="w-full mt-[10px]"
+        />
+      </div>
     </NFormItemRow>
     <NFormItemRow label="标题颜色" path="titleColor">
       <NColorPicker v-model:value="chartConfig.titleColor" />
@@ -230,23 +365,9 @@ const delColor = (index) => {
 </template>
 
 <style scoped>
-.colorBlock {
-  float: left;
-  width: 25px;
-  height: 25px;
-  margin-right: 2px;
-  margin-bottom: 2px;
-}
-.colorBlock:hover .delTag {
-  display: inline-block;
+.action-icon {
   cursor: pointer;
-}
-.delTag {
-  width: 100%;
-  height: 100%;
-  display: none;
-  text-align: center;
-  font-size: 18px;
-  color: #fff;
+  margin-left: 3px;
+  font-size: 16px;
 }
 </style>

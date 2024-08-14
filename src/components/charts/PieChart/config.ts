@@ -1,13 +1,6 @@
 import chartData from './data.json';
 
 const chartOption = {
-  // 距离
-  grid: {
-    left: 0,
-    top: 0,
-    right: 0,
-    bottom: 0,
-  },
   // 标题
   showTitle: true,
   text: '这是标题',

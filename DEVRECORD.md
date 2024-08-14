@@ -584,9 +584,11 @@ export const ChartList = [BarChart, LineChart, PieChart...];
 
 1、监听拖拽事件，将对应图表组件的配置数据赋给dragData
 
+注意：这里需要深拷贝
+
 ```javascript
 function dragStart(_, item) {
-  dragData.value = item;
+  dragData.value = cloneDeep(item);
 }
 ```
 

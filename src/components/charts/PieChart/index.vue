@@ -3,7 +3,7 @@
 import { defineProps, nextTick, onMounted, onUnmounted, watch, ref } from 'vue';
 import * as echarts from 'echarts';
 
-const changePieInterval = ref(null);
+const pieIntervalRef = ref(null);
 
 const props = defineProps({
   id: {
@@ -148,14 +148,13 @@ function loadChart() {
             shadowColor: 'rgba(255, 0, 0, 0.5)',
           },
         },
-        ...props.chartOption.grid,
       },
     ],
   };
   myChart.setOption(option);
 
   // 自动轮播
-  if (changePieInterval.value) clearInterval(changePieInterval.value);
+  if (pieIntervalRef.value) clearInterval(pieIntervalRef.value);
   if (props.chartOption.autoPlay) {
     let currentIndex = -1; // 当前高亮图形在饼图数据中的下标
 
@@ -200,19 +199,19 @@ function loadChart() {
     };
     selectPie();
 
-    changePieInterval.value = setInterval(selectPie, props.chartOption.interval); // 设置自动切换高亮图形的定时器
+    pieIntervalRef.value = setInterval(selectPie, props.chartOption.interval); // 设置自动切换高亮图形的定时器
 
     myChart.on('mouseover', (params) => {
       // 用户鼠标悬浮到某一图形时，停止自动切换并高亮鼠标悬浮的图形
-      clearInterval(changePieInterval.value);
+      clearInterval(pieIntervalRef.value);
       currentIndex = params.dataIndex;
       highlightPie();
     });
 
     myChart.on('mouseout', () => {
       // 用户鼠标移出时，重新开始自动切换
-      if (changePieInterval.value) clearInterval(changePieInterval.value);
-      changePieInterval.value = setInterval(selectPie, props.chartOption.interval);
+      if (pieIntervalRef.value) clearInterval(pieIntervalRef.value);
+      pieIntervalRef.value = setInterval(selectPie, props.chartOption.interval);
     });
   } else {
     // 遍历饼图数据，取消所有图形的高亮效果

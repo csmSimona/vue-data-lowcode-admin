@@ -18,79 +18,79 @@ export const useChartEditStore = defineStore('chartEditStore', () => {
     },
     // 图表数组
     componentList: [
-      {
-        id: 1,
-        chartKey: 'BarChart',
-        chartName: '柱状图',
-        x: 0,
-        y: 0,
-        width: 500,
-        height: 300,
-        chartOption: {
-          xAxisShow: true,
-          yAxisShow: true,
-          xTickShow: true,
-          yTickShow: true,
-          xGridLineShow: false,
-          yGridLineShow: false,
-          xLineShow: true,
-          yLineShow: true,
-          xLabelShow: true,
-          yLabelShow: true,
-          xLabelColor: '#fff',
-          yLabelColor: '#eee',
-          xLineColor: '#fff',
-          yLineColor: '#eee',
-          barColor: '#409eff',
-          grid: {
-            left: 10,
-            top: 20,
-            right: 10,
-            bottom: 10
-          }
-        },
-        chartData: {
-          xData: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-          yData: [820, 932, 901, 934, 1290, 1330, 1320, 801, 102, 230, 4321, 4129]
-        }
-      },
-      {
-        id: 2,
-        chartKey: 'LineChart',
-        chartName: '折线图',
-        x: 300,
-        y: 300,
-        width: 500,
-        height: 300,
-        chartOption: {
-          xAxisShow: true,
-          yAxisShow: true,
-          xTickShow: true,
-          yTickShow: true,
-          xGridLineShow: false,
-          yGridLineShow: false,
-          xLineShow: true,
-          yLineShow: true,
-          xLabelShow: true,
-          yLabelShow: true,
-          xLabelColor: '#fff',
-          yLabelColor: '#eee',
-          xLineColor: '#fff',
-          yLineColor: '#eee',
-          lineColor: '#409eff',
-          smooth: false,
-          grid: {
-            left: 10,
-            top: 20,
-            right: 10,
-            bottom: 10
-          }
-        },
-        chartData: {
-          xData: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-          yData: [820, 932, 901, 934, 1290, 1330, 1320, 801, 102, 230, 4321, 4129]
-        }
-      }
+      // {
+      //   id: 1,
+      //   chartKey: 'BarChart',
+      //   chartName: '柱状图',
+      //   x: 0,
+      //   y: 0,
+      //   width: 500,
+      //   height: 300,
+      //   chartOption: {
+      //     xAxisShow: true,
+      //     yAxisShow: true,
+      //     xTickShow: true,
+      //     yTickShow: true,
+      //     xGridLineShow: false,
+      //     yGridLineShow: false,
+      //     xLineShow: true,
+      //     yLineShow: true,
+      //     xLabelShow: true,
+      //     yLabelShow: true,
+      //     xLabelColor: '#fff',
+      //     yLabelColor: '#eee',
+      //     xLineColor: '#fff',
+      //     yLineColor: '#eee',
+      //     barColor: '#409eff',
+      //     grid: {
+      //       left: 10,
+      //       top: 20,
+      //       right: 10,
+      //       bottom: 10
+      //     }
+      //   },
+      //   chartData: {
+      //     xData: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+      //     yData: [820, 932, 901, 934, 1290, 1330, 1320, 801, 102, 230, 4321, 4129]
+      //   }
+      // },
+      // {
+      //   id: 2,
+      //   chartKey: 'LineChart',
+      //   chartName: '折线图',
+      //   x: 300,
+      //   y: 300,
+      //   width: 500,
+      //   height: 300,
+      //   chartOption: {
+      //     xAxisShow: true,
+      //     yAxisShow: true,
+      //     xTickShow: true,
+      //     yTickShow: true,
+      //     xGridLineShow: false,
+      //     yGridLineShow: false,
+      //     xLineShow: true,
+      //     yLineShow: true,
+      //     xLabelShow: true,
+      //     yLabelShow: true,
+      //     xLabelColor: '#fff',
+      //     yLabelColor: '#eee',
+      //     xLineColor: '#fff',
+      //     yLineColor: '#eee',
+      //     lineColor: '#409eff',
+      //     smooth: false,
+      //     grid: {
+      //       left: 10,
+      //       top: 20,
+      //       right: 10,
+      //       bottom: 10
+      //     }
+      //   },
+      //   chartData: {
+      //     xData: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+      //     yData: [820, 932, 901, 934, 1290, 1330, 1320, 801, 102, 230, 4321, 4129]
+      //   }
+      // }
     ]
   });
 
