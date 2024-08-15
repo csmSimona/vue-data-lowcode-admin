@@ -1,45 +1,78 @@
 import chartData from './data.json';
 
 const chartOption = {
-  // 标题
-  showTitle: true,
-  text: '这是标题',
-  titleX: 'center',
-  titleY: 'top',
-  titleColor: '#ccc',
-  titleFontSize: 18,
-  subtext: '这是副标题',
-  subtextColor: '#aaa',
-  subtextFontSize: 18,
-  // 图例
-  showLegend: true,
-  legendOrient: 'horizontal',
-  legendIcon: 'circle',
-  legendX: 'center',
-  legendY: 'bottom',
-  legendTextColor: '#ddd',
-  legendFontSize: 12,
-  // 文本标签
-  labelPosition: 'center',
-  labelFontSize: 18,
-  labelColor: '#ddd',
-  labelShowType: 'data',
-  // 图表
-  startAngle: 90,
-  radiusInside: 40,
-  radiusOutside: 60,
-  roseType: 'false',
-  borderRadius: 0,
-  borderColor: '#232324',
-  borderWidth: 0,
   // 饼图颜色
-  pieColor: ['#91cc75', '#fac858', '#ee6666', '#73c0de', '#5470c6', '#ff8c71'],
+  color: ['#91cc75', '#fac858', '#ee6666', '#73c0de', '#5470c6', '#ff8c71'],
+  // 标题
+  title: {
+    show: true,
+    text: '这是标题',
+    left: 'center',
+    top: 'top',
+    textStyle: {
+      fontSize: 18,
+      color: '#ccc',
+    },
+  },
+  tooltip: {
+    trigger: 'item',
+  },
+  // 图例
+  legend: {
+    show: true,
+    orient: 'horizontal',
+    icon: 'circle',
+    x: 'center',
+    y: 'bottom',
+    textStyle: {
+      color: '#ddd',
+      fontSize: 12,
+    },
+  },
+  series: [
+    {
+      name: '访问来源',
+      type: 'pie',
+      // 内环大小
+      radiusInside: 40,
+      // 外环大小
+      radiusOutside: 60,
+      // 起始角度
+      startAngle: 90,
+      // 是否展示成南丁格尔图
+      roseType: 'none',
+      itemStyle: {
+        // 圆角
+        borderRadius: 0,
+        borderColor: '#232324',
+        // 边框宽度
+        borderWidth: 0,
+      },
+      // 文本标签
+      label: {
+        position: 'center',
+        fontSize: 18,
+        color: '#ddd',
+        labelShowType: 'percent',
+      },
+      emphasis: {
+        label: {
+          show: true,
+        },
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(255, 0, 0, 0.5)',
+        },
+      },
+    },
+  ],
   // 自动轮播
   autoPlay: true,
   // 轮播间隔
   interval: 3000,
   // 轮播显示提示
-  showTooltip: false,
+  showTooltip: true,
 };
 
 const chartConfig = {
@@ -48,7 +81,7 @@ const chartConfig = {
   width: 500,
   height: 400,
   chartOption,
-  chartData
+  chartData,
 };
 
 export default chartConfig;

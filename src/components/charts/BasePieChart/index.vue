@@ -70,88 +70,37 @@ function initChart() {
 
 // 加载图表配置和数据
 function loadChart() {
-  const option = {
-    color: props.chartOption.pieColor,
-    title: {
-      show: props.chartOption.showTitle,
-      text: props.chartOption.text,
-      left: props.chartOption.titleX,
-      top: props.chartOption.titleY,
-      textStyle: {
-        fontSize: props.chartOption.titleFontSize,
-        color: props.chartOption.titleColor,
-      },
-      subtext: props.chartOption.subtext,
-      // 副标题文本样式设置
-      subtextStyle: {
-        fontSize: props.chartOption.subtextFontSize,
-        color: props.chartOption.subtextColor,
-      },
-    },
-    tooltip: {
-      trigger: 'item',
-    },
-    legend: {
-      show: props.chartOption.showLegend,
-      orient: props.chartOption.legendOrient,
-      icon: props.chartOption.legendIcon,
-      x: props.chartOption.legendX,
-      y: props.chartOption.legendY,
-      textStyle: {
-        color: props.chartOption.legendTextColor,
-        fontSize: props.chartOption.legendFontSize,
-      },
-    },
+  myChart.setOption({
+    ...props.chartOption,
     series: [
       {
-        name: props.chartOption.chartTitle,
-        type: 'pie',
-        startAngle: props.chartOption.startAngle,
-        roseType: props.chartOption.roseType === 'false' ? false : props.chartOption.roseType,
-        radius: [props.chartOption.radiusInside + '%', props.chartOption.radiusOutside + '%'],
+        ...props.chartOption.series[0],
+        radius: [
+          props.chartOption.series[0].radiusInside + '%',
+          props.chartOption.series[0].radiusOutside + '%',
+        ],
+        roseType:
+          props.chartOption.series[0].roseType === 'none'
+            ? false
+            : props.chartOption.series[0].roseType,
         label: {
-          show: props.chartOption.labelPosition !== 'center',
-          position: props.chartOption.labelPosition,
-          fontSize: props.chartOption.labelFontSize,
-          color: props.chartOption.labelColor,
-          // formatter: '{d_style|{c}}\n\n{b_style|{b}}',
-          formatter:
-            props.chartOption.labelShowType === 'name'
-              ? '{b}'
-              : props.chartOption.labelShowType === 'data'
-              ? '{c}\n\n{b}'
-              : '{d}%\n\n{b}',
-          // rich: {
-          //   d_style: {
-          //     fontSize: 18,
-          //     color: '#fff',
-          //   },
-          //   b_style: {
-          //     fontSize: props.chartOption.labelFontSize,
-          //     color: props.chartOption.labelColor,
-          //   },
-          // },
-        },
-        itemStyle: {
-          borderRadius: props.chartOption.borderRadius,
-          borderColor: props.chartOption.borderColor,
-          borderWidth: props.chartOption.borderWidth,
-        },
-        data: props.chartData.data,
-        emphasis: {
-          label: {
-            show: true,
-          },
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(255, 0, 0, 0.5)',
+          ...props.chartOption.series[0].label,
+          show: props.chartOption.series[0].label.position !== 'center',
+          formatter: (val) => {
+            switch (props.chartOption.series[0].label.labelShowType) {
+              case 'name':
+                return val.name;
+              case 'data':
+                return `${val.name}\n\n${val.value.value}`;
+              case 'percent':
+                return `${val.name}\n\n${val.percent}%`;
+            }
           },
         },
       },
     ],
-  };
-  myChart.setOption(option);
+    dataset: props.chartData,
+  });
 
   // 自动轮播
   if (pieIntervalRef.value) clearInterval(pieIntervalRef.value);
@@ -161,7 +110,7 @@ function loadChart() {
     const highlightPie = () => {
       // 取消所有高亮并高亮当前图形
       // 遍历饼图数据，取消所有图形的高亮效果
-      for (var idx in props.chartData.data) {
+      for (var idx in props.chartData.source) {
         myChart.dispatchAction({
           type: 'downplay',
           seriesIndex: 0,
@@ -193,7 +142,7 @@ function loadChart() {
     };
     const selectPie = () => {
       // 高亮效果切换到下一个图形
-      var dataLen = props.chartData.data.length;
+      var dataLen = props.chartData.source.length;
       currentIndex = (currentIndex + 1) % dataLen;
       highlightPie();
     };
@@ -215,7 +164,7 @@ function loadChart() {
     });
   } else {
     // 遍历饼图数据，取消所有图形的高亮效果
-    for (var idx in props.chartData.data) {
+    for (var idx in props.chartData.source) {
       myChart.dispatchAction({
         type: 'downplay',
         seriesIndex: 0,

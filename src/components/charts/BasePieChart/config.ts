@@ -34,7 +34,7 @@ const chartOption = {
       name: '访问来源',
       type: 'pie',
       // 内环大小
-      radiusInside: 40,
+      radiusInside: 0,
       // 外环大小
       radiusOutside: 60,
       // 起始角度
@@ -76,8 +76,8 @@ const chartOption = {
 };
 
 const chartConfig = {
-  chartKey: 'RingChart',
-  chartName: '基础环图',
+  chartKey: 'BasePieChart',
+  chartName: '基础饼图',
   width: 500,
   height: 400,
   chartOption,

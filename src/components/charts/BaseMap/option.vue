@@ -1,14 +1,8 @@
 <script setup lang="jsx">
   import { computed, defineProps } from 'vue';
   import CollapseItem from '@/components/CollapseItem/index.vue';
+  import PositionRange from '@/components/PositionRange/index.vue';
   import {
-    AlignLeftOutlined,
-    AlignCenterOutlined,
-    AlignRightOutlined,
-    VerticalAlignTopOutlined,
-    VerticalAlignMiddleOutlined,
-    VerticalAlignBottomOutlined,
-    EditOutlined,
     MinusCircleOutlined,
     PlusCircleOutlined,
   } from '@vicons/antd';
@@ -22,6 +16,19 @@
 
   const chartConfig = computed(() => {
     return props.config;
+  });
+
+  const title = computed(() => {
+    return props.config.title;
+  });
+  const tooltip = computed(() => {
+    return props.config.tooltip;
+  });
+  const visualMap = computed(() => {
+    return props.config.visualMap;
+  });
+  const geo = computed(() => {
+    return props.config.geo;
   });
 
   // 图例布局方式
@@ -46,46 +53,6 @@
       label: '连续式',
       value: 'continuous',
     },
-  ];
-
-  // 图例位置x
-  const legendPositionXOptions = [
-    {
-      label: AlignLeftOutlined,
-      value: 'left',
-    },
-    {
-      label: AlignCenterOutlined,
-      value: 'center',
-    },
-    {
-      label: AlignRightOutlined,
-      value: 'right',
-    },
-    {
-      label: EditOutlined,
-      value: 'edit'
-    }
-  ];
-
-  // 图例位置y
-  const legendPositionYOptions = [
-    {
-      label: VerticalAlignTopOutlined,
-      value: 'top',
-    },
-    {
-      label: VerticalAlignMiddleOutlined,
-      value: 'center',
-    },
-    {
-      label: VerticalAlignBottomOutlined,
-      value: 'bottom',
-    },
-    {
-      label: EditOutlined,
-      value: 'edit'
-    }
   ];
 
   // 地图
@@ -122,16 +89,16 @@
 
   // 新增颜色
   const addColor = (index) => {
-    chartConfig.value.colorRange.splice(index + 1, 0, '#ffffff')
+    visualMap.value.inRange.color.splice(index + 1, 0, '#ffffff')
   };
   // 删除颜色
   const delColor = (index) => {
-    chartConfig.value.colorRange?.length > 1 && chartConfig.value.colorRange.splice(index, 1);
+    visualMap.value.inRange.color?.length > 1 &&  visualMap.value.inRange.color.splice(index, 1);
   };
 
   // 新增配色条件
   const handleAddCondition = () => {
-    chartConfig.value.pieces.push({
+    visualMap.value.pieces.push({
       min: 0,
       max: 0,
       label: '无',
@@ -140,7 +107,7 @@
   }
   // 删除配色条件
   const handleDeleteCondition = (index) => {
-    chartConfig.value.pieces?.length > 1 && chartConfig.value.pieces.splice(index, 1);
+    visualMap.value.pieces?.length > 1 && visualMap.value.pieces.splice(index, 1);
   };
 
 </script>
@@ -148,191 +115,107 @@
 <template>
   <CollapseItem name="标题">
     <template #header>
-      <NSwitch v-model:value="chartConfig.showTitle" size="small" />
+      <NSwitch v-model:value="title.show" size="small" />
     </template>
-
-    <NFormItemRow label="地图标题" path="seriesName">
-      <NInput v-model:value="chartConfig.seriesName" />
+    <NFormItemRow label="地图标题">
+      <NInput v-model:value="title.text" />
     </NFormItemRow>
-    <NFormItemRow label="标题位置(X)" path="titleX">
-      <div class="flex flex-col">
-        <n-radio-group v-model:value="chartConfig.titleX">
-          <n-radio-button
-            v-for="option in legendPositionXOptions"
-            :key="option.value"
-            :value="
-              option.value === 'edit'
-                ? isNaN(chartConfig.titleX)
-                  ? 0
-                  : chartConfig.titleX
-                : option.value
-            "
-          >
-            <n-icon :component="option.label" class="text-[14px]" />
-          </n-radio-button>
-        </n-radio-group>
-        <NInputNumber
-          v-if="!isNaN(chartConfig.titleX)"
-          v-model:value="chartConfig.titleX"
-          class="w-full mt-[10px]"
-        />
-      </div>
+    <NFormItemRow label="标题位置(X)">
+      <PositionRange v-model:position="title.left" type="x" />
     </NFormItemRow>
-    <NFormItemRow label="标题位置(Y)" path="titleY">
-      <div class="flex flex-col">
-        <n-radio-group v-model:value="chartConfig.titleY">
-          <n-radio-button
-            v-for="option in legendPositionYOptions"
-            :key="option.value"
-            :value="
-              option.value === 'edit'
-                ? isNaN(chartConfig.titleY)
-                  ? 0
-                  : chartConfig.titleY
-                : option.value
-            "
-          >
-            <n-icon :component="option.label" class="text-[14px]" />
-          </n-radio-button>
-        </n-radio-group>
-        <NInputNumber
-          v-if="!isNaN(chartConfig.titleY)"
-          v-model:value="chartConfig.titleY"
-          class="w-full mt-[10px]"
-        />
-      </div>
+    <NFormItemRow label="标题位置(Y)">
+      <PositionRange v-model:position="title.top" type="y" />
     </NFormItemRow>
-    <NFormItemRow label="标题颜色" path="titleColor">
-      <NColorPicker v-model:value="chartConfig.titleColor" />
+    <NFormItemRow label="标题颜色">
+      <NColorPicker v-model:value="title.textStyle.color" />
     </NFormItemRow>
-    <NFormItemRow label="标题字号" path="titleFontSize">
-      <NInputNumber v-model:value="chartConfig.titleFontSize" :min="10" class="w-full" />
+    <NFormItemRow label="标题字号">
+      <NInputNumber v-model:value="title.textStyle.fontSize" :min="10" class="w-full" />
     </NFormItemRow>
   </CollapseItem>
 
   <CollapseItem name="基础地图">
-    <NFormItemRow label="地图区域" path="mapName">
-      <NSelect v-model:value="chartConfig.mapName" :options="mapRegionOptions" />
+    <NFormItemRow label="地图区域">
+      <NSelect v-model:value="geo.map" :options="mapRegionOptions" />
     </NFormItemRow>
-    <NFormItemRow label="缩放比例" path="zoom">
-      <NInputNumber v-model:value="chartConfig.zoom" class="w-full" />
+    <NFormItemRow label="缩放比例">
+      <NInputNumber v-model:value="geo.zoom" class="w-full" />
     </NFormItemRow>
-    <NFormItemRow label="文本标签展示" path="showLabel">
-      <NSwitch v-model:value="chartConfig.showLabel" size="small" />
+    <NFormItemRow label="文本标签展示">
+      <NSwitch v-model:value="geo.label.normal.show" size="small" />
     </NFormItemRow>
-    <NFormItemRow label="文本标签颜色" path="labelColor">
-      <NColorPicker v-model:value="chartConfig.labelColor" />
+    <NFormItemRow label="文本标签颜色">
+      <NColorPicker v-model:value="geo.label.normal.color" />
     </NFormItemRow>
-    <NFormItemRow label="文本标签字号" path="labelFontSize">
-      <NInputNumber v-model:value="chartConfig.labelFontSize" :min="10" class="w-full" />
-    </NFormItemRow>
-
-    <NFormItemRow label="悬浮弹窗展示" path="showTooltip">
-      <NSwitch v-model:value="chartConfig.showTooltip" size="small" />
-    </NFormItemRow>
-    <NFormItemRow label="悬浮弹窗背景" path="tooltipBg">
-      <NColorPicker v-model:value="chartConfig.tooltipBg" size="small" />
-    </NFormItemRow>
-    <NFormItemRow label="悬浮弹窗文本颜色" path="tooltipColor">
-      <NColorPicker v-model:value="chartConfig.tooltipColor" size="small" />
+    <NFormItemRow label="文本标签字号">
+      <NInputNumber v-model:value="geo.label.normal.fontSize" :min="10" class="w-full" />
     </NFormItemRow>
 
-    <NFormItemRow label="区域边框" path="borderColor">
-      <NColorPicker v-model:value="chartConfig.borderColor" />
+    <NFormItemRow label="区域边框">
+      <NColorPicker v-model:value="geo.itemStyle.normal.borderColor" />
     </NFormItemRow>
-    <NFormItemRow label="鼠标悬停聚焦" path="emphasisAreaColor">
-      <NColorPicker v-model:value="chartConfig.emphasisAreaColor" />
+    <NFormItemRow label="鼠标悬停聚焦颜色">
+      <NColorPicker v-model:value="geo.itemStyle.emphasis.areaColor" />
     </NFormItemRow>
 
-    <NFormItemRow label="自动轮播" path="autoPlay">
+    <NFormItemRow label="地图投影">
+      <NSwitch v-model:value="geo.showProjection" size="small" />
+    </NFormItemRow>
+    <NFormItemRow label="投影类型">
+      <NSelect v-model:value="geo.projectionType" :options="projectionTypeOptions" />
+    </NFormItemRow>
+
+    <NFormItemRow label="自动轮播">
       <NSwitch v-model:value="chartConfig.autoPlay" size="small" />
     </NFormItemRow>
-    <NFormItemRow label="轮播间隔" path="interval">
+    <NFormItemRow label="轮播间隔">
       <NInputNumber v-model:value="chartConfig.interval" :min="1000" class="w-full">
         <template #suffix> 毫秒 </template>
       </NInputNumber>
     </NFormItemRow>
+  </CollapseItem>
 
-    <NFormItemRow label="地图投影" path="showProjection">
-      <NSwitch v-model:value="chartConfig.showProjection" size="small" />
+  <CollapseItem name="提示框">
+    <template #header>
+      <NSwitch v-model:value="tooltip.show" size="small" />
+    </template>
+    <NFormItemRow label="弹窗背景">
+      <NColorPicker v-model:value="tooltip.backgroundColor" size="small" />
     </NFormItemRow>
-    <NFormItemRow label="投影类型" path="projectionType">
-      <NSelect v-model:value="chartConfig.projectionType" :options="projectionTypeOptions" />
+    <NFormItemRow label="文本颜色">
+      <NColorPicker v-model:value="tooltip.textStyle.color" size="small" />
     </NFormItemRow>
   </CollapseItem>
 
   <CollapseItem name="图例">
     <template #header>
-      <NSwitch v-model:value="chartConfig.showLegend" size="small" />
+      <NSwitch v-model:value="visualMap.show" size="small" />
     </template>
-    <NFormItemRow label="图例布局方式" path="legendOrient">
-      <NSelect v-model:value="chartConfig.legendOrient" :options="legendOrientOptions" />
+    <NFormItemRow label="图例布局方式">
+      <NSelect v-model:value="visualMap.orient" :options="legendOrientOptions" />
     </NFormItemRow>
 
-    <NFormItemRow label="图例位置(X)" path="legendX">
-      <div class="flex flex-col">
-        <n-radio-group v-model:value="chartConfig.legendX">
-          <n-radio-button
-            v-for="option in legendPositionXOptions"
-            :key="option.value"
-            :value="
-              option.value === 'edit'
-                ? isNaN(chartConfig.legendX)
-                  ? 0
-                  : chartConfig.legendX
-                : option.value
-            "
-          >
-            <n-icon :component="option.label" class="text-[14px]" />
-          </n-radio-button>
-        </n-radio-group>
-        <NInputNumber
-          v-if="!isNaN(chartConfig.legendX)"
-          v-model:value="chartConfig.legendX"
-          class="w-full mt-[10px]"
-        />
-      </div>
+    <NFormItemRow label="图例位置(X)">
+      <PositionRange v-model:position="visualMap.left" type="x" />
+    </NFormItemRow>
+    <NFormItemRow label="图例位置(Y)">
+      <PositionRange v-model:position="visualMap.top" type="y" />
     </NFormItemRow>
 
-    <NFormItemRow label="图例位置(Y)" path="legendY">
-      <div class="flex flex-col">
-        <n-radio-group v-model:value="chartConfig.legendY">
-          <n-radio-button
-            v-for="option in legendPositionYOptions"
-            :key="option.value"
-            :value="
-              option.value === 'edit'
-                ? isNaN(chartConfig.legendY)
-                  ? 0
-                  : chartConfig.legendY
-                : option.value
-            "
-          >
-            <n-icon :component="option.label" class="text-[14px]" />
-          </n-radio-button>
-        </n-radio-group>
-        <NInputNumber
-          v-if="!isNaN(chartConfig.legendY)"
-          v-model:value="chartConfig.legendY"
-          class="w-full mt-[10px]"
-        />
-      </div>
+    <NFormItemRow label="图例文本颜色">
+      <NColorPicker v-model:value="visualMap.textStyle.color" />
     </NFormItemRow>
 
-    <NFormItemRow label="图例文本颜色" path="legendTextColor">
-      <NColorPicker v-model:value="chartConfig.legendTextColor" />
+    <NFormItemRow label="图例类型">
+      <NSelect v-model:value="visualMap.type" :options="legendTypeOptions" />
     </NFormItemRow>
 
-    <NFormItemRow label="图例类型" path="legendType">
-      <NSelect v-model:value="chartConfig.legendType" :options="legendTypeOptions" />
-    </NFormItemRow>
-
-    <NFormItemRow label="配色条件" v-if="chartConfig.legendType === 'piecewise'" />
+    <NFormItemRow label="配色条件" v-if="visualMap.type === 'piecewise'" />
     <div
       class="flex flex-col w-full gap-[10px] bg-slate-50 p-[10px] mt-[-10px]"
-      v-if="chartConfig.legendType === 'piecewise'"
+      v-if="visualMap.type === 'piecewise'"
     >
-      <div v-for="(item, index) in chartConfig.pieces" :key="index">
+      <div v-for="(item, index) in visualMap.pieces" :key="index">
         <div class="conditionItem">
           <span class="label">标签</span>
           <NInput v-model:value="item.label" />
@@ -348,7 +231,7 @@
         </div>
         <NButton
           @click="handleDeleteCondition(index)"
-          :disabled="chartConfig.pieces?.length < 2"
+          :disabled="visualMap.pieces?.length < 2"
           class="w-full mb-[10px]"
         >
           删除
@@ -361,14 +244,18 @@
 
     <NFormItemRow label="颜色分布" v-else>
       <div class="flex flex-col w-full gap-[10px]">
-        <div v-for="(item, index) in chartConfig.colorRange" :key="index" class="flex items-center">
-          <NColorPicker v-model:value="chartConfig.colorRange[index]" />
+        <div
+          v-for="(item, index) in visualMap.inRange.color"
+          :key="index"
+          class="flex items-center"
+        >
+          <NColorPicker v-model:value="visualMap.inRange.color[index]" />
           <n-icon
             :component="MinusCircleOutlined"
             @click="delColor(index)"
             class="action-icon"
             :style="{
-              cursor: chartConfig.colorRange?.length > 1 ? 'pointer' : 'not-allowed',
+              cursor: visualMap.inRange.color?.length > 1 ? 'pointer' : 'not-allowed',
             }"
           />
           <n-icon :component="PlusCircleOutlined" @click="addColor(index)" class="action-icon" />

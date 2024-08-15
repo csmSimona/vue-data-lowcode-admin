@@ -1,5 +1,6 @@
 {
-  "dataList": [
+  "dimensions": ["name", "value"],
+  "source": [
     { "name": "杭州市", "value": 120 },
     { "name": "宁波市", "value": 70 },
     { "name": "温州市", "value": 60 },

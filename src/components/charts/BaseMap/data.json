@@ -1,5 +1,6 @@
 {
-  "dataList": [
+  "dimensions": ["name", "value"],
+  "source": [
     {
       "name": "南海诸岛",
       "value": 0

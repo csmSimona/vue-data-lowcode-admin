@@ -84,7 +84,7 @@ function initChart() {
   loadChart();
 }
 const mapProject = (point) => {
-  switch (props.chartOption.projectionType) {
+  switch (props.chartOption.geo.projectionType) {
     case 'custom':
       return [0.5 * point[0] + 0.5 * point[1], -0.4 * point[1] + 0.2 * point[0]];
     case 'Mercator':
@@ -102,90 +102,29 @@ const mapUnproject = (point) => {
 // 加载图表配置和数据
 async function loadChart() {
   // 注册地图
-  const newMapJson = await getMapJson(props.chartOption.mapName);
-  echart.registerMap(props.chartOption.mapName, newMapJson);
+  const mapName = props.chartOption.geo.map;
+  const newMapJson = await getMapJson(mapName);
+  echart.registerMap(mapName, newMapJson);
 
-  const option = {
-    title: {
-      show: props.chartOption.showTitle,
-      text: props.chartOption.seriesName,
-      left: props.chartOption.titleX,
-      top: props.chartOption.titleY,
-      textStyle: {
-        fontSize: props.chartOption.titleFontSize,
-        color: props.chartOption.titleColor,
-      },
-    },
-    tooltip: {
-      show: props.chartOption.showTooltip,
-      backgroundColor: props.chartOption.tooltipBg,
-      textStyle: {
-        color: props.chartOption.tooltipColor,
-      },
-    },
-    visualMap: {
-      show: props.chartOption.showLegend,
-      orient: props.chartOption.legendOrient,
-      type: props.chartOption.legendType,
-      top: props.chartOption.legendY,
-      left: props.chartOption.legendX,
-      showLabel: true,
-      textStyle: {
-        color: props.chartOption.legendTextColor,
-      },
-      pieces: props.chartOption.pieces,
-      calculable: false,
-      inRange: {
-        color: props.chartOption.colorRange,
-        // symbolSize: [30, 100],
-      },
-    },
+  myChart.setOption({
+    ...props.chartOption,
     geo: {
-      map: props.chartOption.mapName,
-      zoom: props.chartOption.zoom,
-      label: {
-        normal: {
-          show: props.chartOption.showLabel,
-          fontSize: props.chartOption.labelFontSize,
-          color: props.chartOption.labelColor,
-        },
-      },
-      itemStyle: {
-        normal: {
-          borderColor: props.chartOption.borderColor,
-        },
-        emphasis: {
-          areaColor: props.chartOption.emphasisAreaColor,
-          shadowOffsetX: 0,
-          shadowOffsetY: 0,
-          borderWidth: 0,
-        },
-      },
-      // 投影相关
-      projection: props.chartOption.showProjection
+      ...props.chartOption.geo,
+      projection: props.chartOption.geo.showProjection
         ? {
             project: (point) => mapProject(point),
             unproject: (point) => mapUnproject(point),
           }
         : null,
     },
-    series: [
-      {
-        name: props.chartOption.seriesName,
-        type: 'map',
-        geoIndex: 0,
-        data: props.chartData.dataList,
-      },
-    ],
-  };
-
-  myChart.setOption(option);
+    dataset: props.chartData,
+  });
 
   // 自动轮播
   if (tooltipIntervalRef.value) clearInterval(tooltipIntervalRef.value);
   if (props.chartOption.autoPlay) {
     var count = 0;
-    var dataLength = option.series[0].data.length;
+    var dataLength = props.chartData.source.length;
 
     function highlight() {
       myChart.dispatchAction({

@@ -333,9 +333,82 @@ import { commonOption } from '../common';
 import chartData from './data.json';
 
 const chartOption = {
-  ...commonOption,
-  lineColor: '#409eff', // 折线颜色
-  smooth: false // 是否平滑展示
+  tooltip: {
+    trigger: 'axis',
+  },
+  grid: {
+    containLabel: true,
+    left: 10,
+    top: 20,
+    right: 10,
+    bottom: 10,
+  },
+  xAxis: {
+    show: true,
+    type: 'category',
+    // 坐标轴刻度标签
+    axisLabel: {
+      show: true,
+      color: '#fff',
+    },
+    // 轴线
+    axisLine: {
+      show: true,
+      lineStyle: {
+        color: '#eee',
+      },
+    },
+    // 刻度线
+    axisTick: {
+      show: true,
+      lineStyle: {
+        color: '#eee',
+      },
+    },
+    // 网格线
+    splitLine: {
+      show: false,
+      lineStyle: {
+        color: '#eee',
+      },
+    },
+  },
+  yAxis: {
+    show: true,
+    type: 'value',
+    // 坐标轴刻度标签
+    axisLabel: {
+      show: true,
+      color: '#fff',
+    },
+    // 轴线
+    axisLine: {
+      show: true,
+      lineStyle: {
+        color: '#eee',
+      },
+    },
+    // 刻度线
+    axisTick: {
+      show: true,
+      lineStyle: {
+        color: '#eee',
+      },
+    },
+    // 网格线
+    splitLine: {
+      show: false,
+      lineStyle: {
+        color: '#eee',
+      },
+    },
+  },
+  series: new Array(chartData?.dimensions?.length - 1).fill(0).map((_) => ({
+    type: 'line',
+    itemStyle: {
+      color: null,
+    },
+  })),
 };
 
 const chartConfig = {
@@ -358,11 +431,11 @@ plugins/customComponents.ts
 
 ```python
 import type { App } from 'vue';
-import LineChart from '@/components/Charts/LineChart/index.vue';
-import BarChart from '@/components/Charts/BarChart/index.vue';
+import BaseLineChart from '@/components/Charts/BaseLineChart/index.vue';
+import BaseBarChart from '@/components/Charts/BaseBarChart/index.vue';
 
-import LineChartOption from '@/components/Charts/LineChart/option.vue';
-import BarChartOption from '@/components/Charts/BarChart/option.vue';
+import BaseLineChartOption from '@/components/Charts/BaseLineChart/option.vue';
+import BaseBarChartOption from '@/components/Charts/BaseBarChart/option.vue';
 
 /**
  * 全局注册自定义组件
@@ -371,12 +444,12 @@ import BarChartOption from '@/components/Charts/BarChart/option.vue';
  */
 export function setupCustomComponents(app: App) {
   // 注册图表组件
-  app.component('LineChart', LineChart);
-  app.component('BarChart', BarChart);
+  app.component('BaseLineChart', BaseLineChart);
+  app.component('BaseBarChart', BaseBarChart);
 
   // 注册图表配置组件
-  app.component('LineChartOption', LineChartOption);
-  app.component('BarChartOption', BarChartOption);
+  app.component('BaseLineChartOption', BaseLineChartOption);
+  app.component('BaseBarChartOption', BaseBarChartOption);
 }
 ```
 
@@ -432,32 +505,10 @@ export const useChartEditStore = defineStore('chartEditStore', () => {
         width: 500,
         height: 300,
         chartOption: {
-          xAxisShow: true,
-          yAxisShow: true,
-          xTickShow: true,
-          yTickShow: true,
-          xGridLineShow: false,
-          yGridLineShow: false,
-          xLineShow: true,
-          yLineShow: true,
-          xLabelShow: true,
-          yLabelShow: true,
-          xLabelColor: '#fff',
-          yLabelColor: '#eee',
-          xLineColor: '#fff',
-          yLineColor: '#eee',
-          lineColor: '#409eff',
-          smooth: false,
-          grid: {
-            left: 10,
-            top: 20,
-            right: 10,
-            bottom: 10
-          }
+          ...
         },
         chartData: {
-          xData: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-          yData: [820, 932, 901, 934, 1290, 1330, 1320, 801, 102, 230, 4321, 4129]
+          ...
         }
       }
     ]
