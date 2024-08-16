@@ -1,7 +1,7 @@
 import chartData from './data.json';
 
 const chartOption = {
-  orient: 'vertical',
+  orient: 'horizontal',
   // 标题
   title: {
     show: false,
@@ -38,7 +38,7 @@ const chartOption = {
   },
   xAxis: {
     show: true,
-    type: 'category',
+    type: 'value',
     // 单位
     name: '',
     nameTextStyle: {
@@ -74,7 +74,7 @@ const chartOption = {
   },
   yAxis: {
     show: true,
-    type: 'value',
+    type: 'category',
     // 单位
     name: '',
     nameTextStyle: {
@@ -127,10 +127,10 @@ const chartOption = {
 };
 
 const chartConfig = {
-  chartKey: 'BaseBarChart',
-  chartName: '基础柱状图',
-  width: 500,
-  height: 300,
+  chartKey: 'HorizontalBarChart',
+  chartName: '横向柱状图',
+  width: 550,
+  height: 400,
   chartOption,
   chartData,
 };

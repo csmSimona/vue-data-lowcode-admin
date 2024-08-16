@@ -113,6 +113,7 @@ const chartOption = {
     barWidth: 15,
     showBackground: false,
     barGap: 20,
+    stack: 'group', // stack值相同为一组堆叠
     itemStyle: {
       color: null,
       borderRadius: 2,
@@ -127,8 +128,8 @@ const chartOption = {
 };
 
 const chartConfig = {
-  chartKey: 'BaseBarChart',
-  chartName: '基础柱状图',
+  chartKey: 'StackBarChart',
+  chartName: '堆叠柱状图',
   width: 500,
   height: 300,
   chartOption,

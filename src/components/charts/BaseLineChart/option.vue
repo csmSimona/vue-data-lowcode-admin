@@ -28,16 +28,16 @@ const seriesList = computed(() => {
 
 <template>
   <CollapseItem name="距离">
-    <NFormItemRow label="距离（上）">
+    <NFormItemRow label="距离(上)">
       <NInputNumber v-model:value="grid.top" class="w-full" />
     </NFormItemRow>
-    <NFormItemRow label="距离（下）">
+    <NFormItemRow label="距离(下)">
       <NInputNumber v-model:value="grid.bottom" class="w-full" />
     </NFormItemRow>
-    <NFormItemRow label="距离（左）">
+    <NFormItemRow label="距离(左)">
       <NInputNumber v-model:value="grid.left" class="w-full" />
     </NFormItemRow>
-    <NFormItemRow label="距离（右）">
+    <NFormItemRow label="距离(右)">
       <NInputNumber v-model:value="grid.right" class="w-full" />
     </NFormItemRow>
   </CollapseItem>

@@ -164,7 +164,6 @@
     <NFormItemRow label="图例位置(X)">
       <PositionRange v-model:position="legend.x" type="x" />
     </NFormItemRow>
-
     <NFormItemRow label="图例位置(Y)">
       <PositionRange v-model:position="legend.y" type="y" />
     </NFormItemRow>
