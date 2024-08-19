@@ -1,11 +1,13 @@
 import type { App } from 'vue';
 import BaseBarChart from '@/components/Charts/BaseBarChart/index.vue';
+import PictorialStackBarChart from '@/components/Charts/PictorialStackBarChart/index.vue';
 import BaseLineChart from '@/components/Charts/BaseLineChart/index.vue';
 import BasePieChart from '@/components/Charts/BasePieChart/index.vue';
 import BaseMap from '@/components/Charts/BaseMap/index.vue';
 import StackMap from '@/components/Charts/StackMap/index.vue';
 
 import BaseBarChartOption from '@/components/Charts/BaseBarChart/option.vue';
+import PictorialStackBarChartOption from '@/components/Charts/PictorialStackBarChart/option.vue';
 import BaseLineChartOption from '@/components/Charts/BaseLineChart/option.vue';
 import BasePieChartOption from '@/components/Charts/BasePieChart/option.vue';
 import BaseMapOption from '@/components/Charts/BaseMap/option.vue';
@@ -21,6 +23,7 @@ export function setupCustomComponents(app: App) {
   app.component('BaseBarChart', BaseBarChart);
   app.component('HorizontalBarChart', BaseBarChart);
   app.component('StackBarChart', BaseBarChart);
+  app.component('PictorialStackBarChart', PictorialStackBarChart);
   app.component('BaseLineChart', BaseLineChart);
   app.component('BasePieChart', BasePieChart);
   app.component('RingChart', BasePieChart);
@@ -35,6 +38,7 @@ export function setupCustomComponents(app: App) {
   app.component('BaseBarChartOption', BaseBarChartOption);
   app.component('HorizontalBarChartOption', BaseBarChartOption);
   app.component('StackBarChartOption', BaseBarChartOption);
+  app.component('PictorialStackBarChartOption', PictorialStackBarChartOption);
   app.component('BaseLineChartOption', BaseLineChartOption);
   app.component('BasePieChartOption', BasePieChartOption);
   app.component('RingChartOption', BasePieChartOption);

@@ -1,0 +1,47 @@
+{
+  "dimensions": ["time", "acceptance", "change", "finish", "born"],
+  "source": [
+    {
+      "time": "1月",
+      "acceptance": 12,
+      "change": 20,
+      "finish": 20,
+      "born": 24
+    },
+    {
+      "time": "2月",
+      "acceptance": 40,
+      "change": 40,
+      "finish": 40,
+      "born": 40
+    },
+    {
+      "time": "3月",
+      "acceptance": 30,
+      "change": 30,
+      "finish": 30,
+      "born": 30
+    },
+    {
+      "time": "4月",
+      "acceptance": 20,
+      "change": 20,
+      "finish": 20,
+      "born": 20
+    },
+    {
+      "time": "5月",
+      "acceptance": 30,
+      "change": 30,
+      "finish": 30,
+      "born": 30
+    },
+    {
+      "time": "6月",
+      "acceptance": 40,
+      "change": 40,
+      "finish": 40,
+      "born": 40
+    }
+  ]
+}
