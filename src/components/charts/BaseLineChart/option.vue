@@ -1,16 +1,34 @@
 <script setup lang="jsx">
 import { computed, defineProps } from 'vue';
 import CollapseItem from '@/components/CollapseItem/index.vue';
+import PositionRange from '@/components/PositionRange/index.vue';
+import ColorRange from '@/components/ColorRange/index.vue';
 
 const props = defineProps({
   config: {
     type: Object,
     default: () => {}
-  }
+  },
+  data: {
+    type: Object,
+    default: () => {},
+  },
+});
+
+const chartData = computed(() => {
+  return props.data;
 });
 
 const grid = computed(() => {
   return props.config.grid;
+});
+
+const title = computed(() => {
+  return props.config.title;
+});
+
+const legend = computed(() => {
+  return props.config.legend;
 });
 
 const xAxis = computed(() => {
@@ -21,9 +39,58 @@ const yAxis = computed(() => {
   return props.config.yAxis;
 });
 
-const seriesList = computed(() => {
-  return props.config.series
+const seriesConfig = computed(() => {
+  return props.config.seriesConfig
 })
+
+const areaColor = computed(() => {
+  return props.config.areaColor
+})
+
+const color = computed(() => {
+  return props.config.color
+})
+
+
+// 图例布局方式
+const legendOrientOptions = [
+  {
+    label: '横向',
+    value: 'horizontal',
+  },
+  {
+    label: '纵向',
+    value: 'vertical',
+  },
+];
+
+// 图例形状
+const legendIconOptions = [
+  {
+    label: '空心圆',
+    value: 'emptyCircle',
+  },
+  {
+    label: '圆形',
+    value: 'circle',
+  },
+  {
+    label: '矩形',
+    value: 'rect',
+  },
+  {
+    label: '圆角矩形',
+    value: 'roundRect',
+  },
+  {
+    label: '三角形',
+    value: 'triangle',
+  },
+  {
+    label: '菱形',
+    value: 'diamond',
+  },
+];
 </script>
 
 <template>
@@ -39,6 +106,52 @@ const seriesList = computed(() => {
     </NFormItemRow>
     <NFormItemRow label="距离(右)">
       <NInputNumber v-model:value="grid.right" class="w-full" />
+    </NFormItemRow>
+  </CollapseItem>
+
+  <CollapseItem name="标题">
+    <template #header>
+      <NSwitch v-model:value="title.show" size="small" />
+    </template>
+
+    <NFormItemRow label="文本">
+      <NInput v-model:value="title.text" />
+    </NFormItemRow>
+    <NFormItemRow label="标题位置(X)">
+      <PositionRange v-model:position="title.left" type="x" />
+    </NFormItemRow>
+    <NFormItemRow label="标题位置(Y)">
+      <PositionRange v-model:position="title.top" type="y" />
+    </NFormItemRow>
+    <NFormItemRow label="标题颜色">
+      <NColorPicker v-model:value="title.textStyle.color" />
+    </NFormItemRow>
+    <NFormItemRow label="标题字号">
+      <NInputNumber v-model:value="title.textStyle.fontSize" :min="10" class="w-full" />
+    </NFormItemRow>
+  </CollapseItem>
+
+  <CollapseItem name="图例">
+    <template #header>
+      <NSwitch v-model:value="legend.show" size="small" />
+    </template>
+    <NFormItemRow label="图例布局方式">
+      <NSelect v-model:value="legend.orient" :options="legendOrientOptions" />
+    </NFormItemRow>
+    <NFormItemRow label="图例形状">
+      <NSelect v-model:value="legend.icon" :options="legendIconOptions" />
+    </NFormItemRow>
+    <NFormItemRow label="图例位置(X)">
+      <PositionRange v-model:position="legend.x" type="x" />
+    </NFormItemRow>
+    <NFormItemRow label="图例位置(Y)">
+      <PositionRange v-model:position="legend.y" type="y" />
+    </NFormItemRow>
+    <NFormItemRow label="图例文本颜色">
+      <NColorPicker v-model:value="legend.textStyle.color" />
+    </NFormItemRow>
+    <NFormItemRow label="图例字号">
+      <NInputNumber v-model:value="legend.textStyle.fontSize" :min="10" class="w-full" />
     </NFormItemRow>
   </CollapseItem>
 
@@ -110,10 +223,24 @@ const seriesList = computed(() => {
     </NFormItemRow>
   </CollapseItem>
 
-  <CollapseItem v-for="(item, index) in seriesList" :key="index" :name="`折线图-${index + 1}`">
-    <NFormItemRow label="线条颜色">
-      <NColorPicker v-model:value="item.itemStyle.color" />
+  <CollapseItem name="折线图">
+    <NFormItemRow label="平滑展示">
+      <NSwitch v-model:value="seriesConfig.smooth" size="small" />
     </NFormItemRow>
+    <NFormItemRow label="标记点形状">
+      <NSelect v-model:value="seriesConfig.symbol" :options="legendIconOptions" />
+    </NFormItemRow>
+    <NFormItemRow label="标记点大小">
+      <NInputNumber v-model:value="seriesConfig.symbolSize" :min="0" class="w-full" />
+    </NFormItemRow>
+  </CollapseItem>
+
+  <CollapseItem name="线条颜色" v-if="color">
+    <ColorRange v-model:color="color" :data-length="chartData?.dimensions.length - 1" />
+  </CollapseItem>
+
+  <CollapseItem name="面积颜色" v-if="areaColor">
+    <ColorRange v-model:color="areaColor" :data-length="chartData?.dimensions.length - 1" />
   </CollapseItem>
 </template>
 

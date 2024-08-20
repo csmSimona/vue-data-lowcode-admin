@@ -98,14 +98,15 @@ const chartOption = {
     type: 'line',
     smooth: false,
     symbol: 'circle',
-    symbolSize: 8,
+    symbolSize: 0,
   },
   color: ['#4992ff', '#7cffb2'], // 线条颜色
+  areaColor: ['#4992ff', '#7cffb2'], // 面积颜色
 };
 
 const chartConfig = {
-  chartKey: 'BaseLineChart',
-  chartName: '基础折线图',
+  chartKey: 'LineAreaChart',
+  chartName: '面积图',
   width: 500,
   height: 300,
   chartOption,

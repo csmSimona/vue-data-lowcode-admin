@@ -94,18 +94,33 @@ const chartOption = {
       },
     },
   },
-  seriesConfig: {
+  lineConfig: {
     type: 'line',
     smooth: false,
     symbol: 'circle',
     symbolSize: 8,
   },
-  color: ['#4992ff', '#7cffb2'], // 线条颜色
+  barConfig: {
+    type: 'bar',
+    barWidth: 15,
+    barGap: 20,
+    itemStyle: {
+      color: null,
+      borderRadius: 2,
+    },
+    label: {
+      show: false,
+      position: 'top',
+      color: '#fff',
+      fontSize: 12,
+    },
+  },
+  color: ['#4992ff', '#7cffb2'],
 };
 
 const chartConfig = {
-  chartKey: 'BaseLineChart',
-  chartName: '基础折线图',
+  chartKey: 'BarLineChart',
+  chartName: '折柱图',
   width: 500,
   height: 300,
   chartOption,

@@ -2,10 +2,7 @@
   import { computed, defineProps } from 'vue';
   import CollapseItem from '@/components/CollapseItem/index.vue';
   import PositionRange from '@/components/PositionRange/index.vue';
-  import {
-    MinusCircleOutlined,
-    PlusCircleOutlined,
-  } from '@vicons/antd';
+  import ColorRange from '@/components/ColorRange/index.vue';
 
   const props = defineProps({
     config: {
@@ -74,16 +71,6 @@
       value: 330903
     },
   ]
-
-  // 新增颜色
-  const addColor = (index) => {
-    visualMap.value.inRange.color.splice(index + 1, 0, '#ffffff')
-  };
-  // 删除颜色
-  const delColor = (index) => {
-    visualMap.value.inRange.color?.length > 1 &&  visualMap.value.inRange.color.splice(index, 1);
-  };
-
   // 新增配色条件
   const handleAddCondition = () => {
     visualMap.value.pieces.push({
@@ -228,24 +215,7 @@
     </div>
 
     <NFormItemRow label="颜色分布" v-else>
-      <div class="flex flex-col w-full gap-[10px]">
-        <div
-          v-for="(item, index) in visualMap.inRange.color"
-          :key="index"
-          class="flex items-center"
-        >
-          <NColorPicker v-model:value="visualMap.inRange.color[index]" />
-          <n-icon
-            :component="MinusCircleOutlined"
-            @click="delColor(index)"
-            class="action-icon"
-            :style="{
-              cursor: visualMap.inRange.color?.length > 1 ? 'pointer' : 'not-allowed',
-            }"
-          />
-          <n-icon :component="PlusCircleOutlined" @click="addColor(index)" class="action-icon" />
-        </div>
-      </div>
+      <ColorRange v-model:color="visualMap.inRange.color" :data-length="1" />
     </NFormItemRow>
   </CollapseItem>
 </template>

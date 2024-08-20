@@ -58,7 +58,7 @@ const geoOptions = [
       borderColor: 'rgba(81, 123, 165, 1)',
     },
   },
-  // 第二层，下层地图，防3d效果
+  // 第二层，下层地图，仿3d效果
   {
     zlevel: 4,
     z: 3,
@@ -75,7 +75,7 @@ const geoOptions = [
       areaColor: 'rgba(56,96,155,1)',
     },
   },
-  // 第三层，下层地图，防3d效果
+  // 第三层，下层地图，仿3d效果
   {
     zlevel: 3,
     z: 2,
@@ -84,7 +84,7 @@ const geoOptions = [
       disabled: true,
     },
     silent: true, // 不响应和触发鼠标事件
-    layoutCenter: ['50%', '51%'], // 位置
+    layoutCenter: ['49%', '50%'], // 位置
     // 颜色
     itemStyle: {
       borderWidth: 0,
@@ -92,7 +92,7 @@ const geoOptions = [
       areaColor: 'rgba(56,96,155,1)',
     },
   },
-  // 第四层，下层地图，防3d效果
+  // 第四层，下层地图，仿3d效果
   {
     zlevel: 2,
     z: 1,
@@ -101,7 +101,7 @@ const geoOptions = [
       disabled: true,
     },
     silent: true, // 不响应和触发鼠标事件
-    layoutCenter: ['50%', '51.3%'], // 位置
+    layoutCenter: ['49%', '50%'], // 位置
     // 颜色
     itemStyle: {
       borderColor: 'rgba(0, 0, 0, 0.3)',

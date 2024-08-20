@@ -2,18 +2,18 @@
 import { computed, defineProps } from 'vue';
 import CollapseItem from '@/components/CollapseItem/index.vue';
 import PositionRange from '@/components/PositionRange/index.vue';
-  import {
-    MinusCircleOutlined,
-    PlusCircleOutlined
-  } from '@vicons/antd';
+import ColorRange from '@/components/ColorRange/index.vue';
 
 const props = defineProps({
   config: {
     type: Object,
     default: () => {}
-  }
+  },
+  data: {
+    type: Object,
+    default: () => {},
+  },
 });
-
 
 const grid = computed(() => {
   return props.config.grid;
@@ -75,14 +75,6 @@ const legendIconOptions = [
   },
 ];
 
-// 新增颜色
-const addColor = (index) => {
-  color.value.splice(index + 1, 0, '#ffffff')
-};
-// 删除颜色
-const delColor = (index) => {
-  color.value?.length > 1 && color.value.splice(index, 1);
-};
 </script>
 
 <template>
@@ -236,20 +228,7 @@ const delColor = (index) => {
   </CollapseItem>
 
   <CollapseItem name="柱子颜色">
-    <div class="flex flex-col w-full gap-[10px]">
-      <div v-for="(item, index) in color" :key="index" class="flex items-center">
-        <NColorPicker v-model:value="color[index]" class="mr-[6px]" />
-        <n-icon
-          :component="MinusCircleOutlined"
-          @click="delColor(index)"
-          class="action-icon"
-          :style="{
-            cursor: color?.length > 1 ? 'pointer' : 'not-allowed',
-          }"
-        />
-        <n-icon :component="PlusCircleOutlined" @click="addColor(index)" class="action-icon" />
-      </div>
-    </div>
+    <ColorRange v-model:color="color" :data-length="chartData?.dimensions.length - 1" />
   </CollapseItem>
 </template>
 

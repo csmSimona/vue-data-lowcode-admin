@@ -2,16 +2,21 @@
 import { computed, defineProps } from 'vue';
 import CollapseItem from '@/components/CollapseItem/index.vue';
 import PositionRange from '@/components/PositionRange/index.vue';
+import ColorRange from '@/components/ColorRange/index.vue';
 
 const props = defineProps({
   config: {
     type: Object,
     default: () => {}
-  }
+  },
+  data: {
+    type: Object,
+    default: () => {},
+  },
 });
 
-const chartConfig = computed(() => {
-  return props.config;
+const chartData = computed(() => {
+  return props.data;
 });
 
 const grid = computed(() => {
@@ -34,8 +39,16 @@ const yAxis = computed(() => {
   return props.config.yAxis;
 });
 
-const seriesList = computed(() => {
-  return props.config.series
+const lineConfig = computed(() => {
+  return props.config.lineConfig
+})
+
+const barConfig = computed(() => {
+  return props.config.barConfig
+})
+
+const color = computed(() => {
+  return props.config.color
 })
 
 // 图例布局方式
@@ -52,6 +65,10 @@ const legendOrientOptions = [
 
 // 图例形状
 const legendIconOptions = [
+  {
+    label: '空心圆',
+    value: 'emptyCircle',
+  },
   {
     label: '圆形',
     value: 'circle',
@@ -76,18 +93,6 @@ const legendIconOptions = [
 </script>
 
 <template>
-  <NFormItemRow label="排列方向">
-    <n-radio-group v-model:value="chartConfig.orient">
-      <n-radio-button
-        v-for="option in legendOrientOptions"
-        :key="option.value"
-        :value="option.value"
-      >
-        {{ option.label }}
-      </n-radio-button>
-    </n-radio-group>
-  </NFormItemRow>
-
   <CollapseItem name="距离">
     <NFormItemRow label="距离(上)">
       <NInputNumber v-model:value="grid.top" class="w-full" />
@@ -181,16 +186,6 @@ const legendIconOptions = [
     <NFormItemRow label="标签颜色">
       <NColorPicker v-model:value="xAxis.axisLabel.color" />
     </NFormItemRow>
-
-    <NFormItemRow label="单位">
-      <NInput v-model:value="xAxis.name" />
-    </NFormItemRow>
-    <NFormItemRow label="单位文本颜色">
-      <NColorPicker v-model:value="xAxis.nameTextStyle.color" />
-    </NFormItemRow>
-    <NFormItemRow label="单位文本字号">
-      <NInputNumber v-model:value="xAxis.nameTextStyle.fontSize" :min="10" class="w-full" />
-    </NFormItemRow>
   </CollapseItem>
 
   <CollapseItem name="Y轴">
@@ -225,48 +220,45 @@ const legendIconOptions = [
     <NFormItemRow label="标签颜色">
       <NColorPicker v-model:value="yAxis.axisLabel.color" />
     </NFormItemRow>
+  </CollapseItem>
 
-    <NFormItemRow label="单位">
-      <NInput v-model:value="xAxis.name" />
+  <CollapseItem name="折线图">
+    <NFormItemRow label="平滑展示">
+      <NSwitch v-model:value="lineConfig.smooth" size="small" />
     </NFormItemRow>
-    <NFormItemRow label="单位文本颜色">
-      <NColorPicker v-model:value="xAxis.nameTextStyle.color" />
+    <NFormItemRow label="标记点形状">
+      <NSelect v-model:value="lineConfig.symbol" :options="legendIconOptions" />
     </NFormItemRow>
-    <NFormItemRow label="单位文本字号">
-      <NInputNumber v-model:value="xAxis.nameTextStyle.fontSize" :min="10" class="w-full" />
+    <NFormItemRow label="标记点大小">
+      <NInputNumber v-model:value="lineConfig.symbolSize" :min="0" class="w-full" />
     </NFormItemRow>
   </CollapseItem>
 
-  <CollapseItem v-for="(item, index) in seriesList" :key="index" :name="`柱状图-${index + 1}`">
+  <CollapseItem name="柱状图">
     <NFormItemRow label="柱子宽度">
-      <NInputNumber v-model:value="item.barWidth" class="w-full" />
+      <NInputNumber v-model:value="barConfig.barWidth" class="w-full" />
     </NFormItemRow>
     <NFormItemRow label="柱间距离">
-      <NInputNumber v-model:value="item.barGap" class="w-full">
+      <NInputNumber v-model:value="barConfig.barGap" class="w-full">
         <template #suffix> % </template>
       </NInputNumber>
     </NFormItemRow>
-    <NFormItemRow label="显示柱子背景">
-      <NSwitch v-model:value="item.showBackground" size="small" />
-    </NFormItemRow>
-    <NFormItemRow label="柱子背景颜色" v-show="item.showBackground">
-      <NColorPicker v-model:value="item.backgroundStyle" />
-    </NFormItemRow>
     <NFormItemRow label="柱子圆角">
-      <NInputNumber v-model:value="item.itemStyle.borderRadius" class="w-full" />
-    </NFormItemRow>
-    <NFormItemRow label="柱子颜色">
-      <NColorPicker v-model:value="item.itemStyle.color" />
+      <NInputNumber v-model:value="barConfig.itemStyle.borderRadius" class="w-full" />
     </NFormItemRow>
     <NFormItemRow label="显示文本标签">
-      <NSwitch v-model:value="item.label.show" size="small" />
+      <NSwitch v-model:value="barConfig.label.show" size="small" />
     </NFormItemRow>
     <NFormItemRow label="图例文本颜色">
-      <NColorPicker v-model:value="item.label.color" />
+      <NColorPicker v-model:value="barConfig.label.color" />
     </NFormItemRow>
     <NFormItemRow label="图例字号">
-      <NInputNumber v-model:value="item.label.fontSize" :min="10" class="w-full" />
+      <NInputNumber v-model:value="barConfig.label.fontSize" :min="10" class="w-full" />
     </NFormItemRow>
+  </CollapseItem>
+
+  <CollapseItem name="内容颜色" v-if="color">
+    <ColorRange v-model:color="color" :data-length="chartData?.dimensions.length - 1" />
   </CollapseItem>
 </template>
 

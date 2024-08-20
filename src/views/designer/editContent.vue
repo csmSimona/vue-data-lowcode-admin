@@ -103,7 +103,8 @@ function handleMouseDown(e, item, index) {
           background:
             canvasConfig.backgroundType === 'color'
               ? canvasConfig.backgroundColor
-              : `url(${canvasConfig.backgroundImageUrl}) no-repeat 100% 100%`,
+              : `url(${canvasConfig.backgroundImageUrl}) no-repeat`,
+          backgroundSize: '100% 100%',
         }"
         @dragover="(e) => e.preventDefault()"
         @drop="drop"

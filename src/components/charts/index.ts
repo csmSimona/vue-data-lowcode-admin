@@ -2,8 +2,9 @@ import BaseBarChart from './BaseBarChart/config';
 import HorizontalBarChart from './HorizontalBarChart/config';
 import StackBarChart from './StackBarChart/config';
 import PictorialStackBarChart from './PictorialStackBarChart/config';
-
 import BaseLineChart from './BaseLineChart/config';
+import LineAreaChart from './LineAreaChart/config';
+import BarLineChart from './BarLineChart/config';
 
 import BasePieChart from './BasePieChart/config';
 import RingChart from './RingChart/config';
@@ -21,6 +22,8 @@ export const ChartList = [
   StackBarChart,
   PictorialStackBarChart,
   BaseLineChart,
+  LineAreaChart,
+  BarLineChart,
   BasePieChart,
   RingChart,
   CarouselRingChart,

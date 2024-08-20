@@ -2,7 +2,6 @@
 <script setup>
 import { defineProps, nextTick, onMounted, onUnmounted, watch } from 'vue';
 import * as echarts from 'echarts';
-import { graphic } from 'echarts/core';
 
 const props = defineProps({
   id: {
@@ -68,27 +67,22 @@ function initChart() {
 
 // 加载图表配置和数据
 function loadChart() {
-  const series = new Array(props.chartData?.dimensions?.length - 1).fill(0).map((_, index) => ({
-    ...props.chartOption.seriesConfig,
-    itemStyle: {
-      color: props.chartOption?.color?.[index],
-    },
-    areaStyle: props.chartOption?.areaColor
+  const series = new Array(props.chartData?.dimensions?.length - 1).fill(0).map((_, index) => {
+    return index === 0
       ? {
-          opacity: 0.8,
-          color: new graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: props.chartOption?.areaColor?.[index],
-            },
-            {
-              offset: 1,
-              color: 'rgba(0,0,0,0)',
-            },
-          ]),
+          ...props.chartOption.lineConfig,
+          itemStyle: {
+            color: props.chartOption?.color?.[index],
+          },
         }
-      : null,
-  }));
+      : {
+          ...props.chartOption.barConfig,
+          barGap: props.chartOption.barConfig.barGap + '%',
+          itemStyle: {
+            color: props.chartOption?.color?.[index],
+          },
+        };
+  });
 
   myChart.setOption({
     ...props.chartOption,

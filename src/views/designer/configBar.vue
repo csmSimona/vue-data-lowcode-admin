@@ -84,6 +84,7 @@ const updateComponentData = () => {
             :is="selectComponent.value.chartKey + 'Option'"
             :id="selectComponent.value.id"
             :config="selectComponent.value.chartOption"
+            :data="selectComponent.value.chartData"
           />
         </NForm>
       </NTabPane>
