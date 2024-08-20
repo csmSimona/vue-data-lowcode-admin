@@ -108,10 +108,13 @@ const chartOption = {
       },
     },
   },
-  series: new Array(chartData?.dimensions?.length - 1).fill(0).map((_) => ({
+  seriesConfig: {
     type: 'bar',
     barWidth: 15,
     showBackground: false,
+    backgroundStyle: {
+      color: 'rgba(255,255,255,0.1)',
+    },
     barGap: 20,
     stack: 'group', // stack值相同为一组堆叠
     itemStyle: {
@@ -124,7 +127,8 @@ const chartOption = {
       color: '#fff',
       fontSize: 12,
     },
-  })),
+  },
+  color: ['#4992ff', '#7cffb2'],
 };
 
 const chartConfig = {

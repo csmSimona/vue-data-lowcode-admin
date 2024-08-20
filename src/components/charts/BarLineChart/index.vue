@@ -71,16 +71,10 @@ function loadChart() {
     return index === 0
       ? {
           ...props.chartOption.lineConfig,
-          itemStyle: {
-            color: props.chartOption?.color?.[index],
-          },
         }
       : {
           ...props.chartOption.barConfig,
           barGap: props.chartOption.barConfig.barGap + '%',
-          itemStyle: {
-            color: props.chartOption?.color?.[index],
-          },
         };
   });
 

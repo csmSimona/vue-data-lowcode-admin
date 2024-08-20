@@ -26,7 +26,9 @@ const chartOption = {
     },
   },
   tooltip: {
+    show: true,
     trigger: 'axis',
+    // formatter: '{a}: ({c})',
   },
   // 距离
   grid: {
@@ -109,30 +111,22 @@ const chartOption = {
     },
   },
   seriesConfig: {
-    type: 'bar',
-    barWidth: 15,
-    showBackground: false,
-    backgroundStyle: {
-      color: 'rgba(255,255,255,0.1)',
-    },
-    barGap: 20,
-    itemStyle: {
-      color: null,
-      borderRadius: 2,
-    },
+    type: 'scatter',
     label: {
       show: false,
       position: 'top',
       color: '#fff',
       fontSize: 12,
     },
+    symbol: 'circle',
+    symbolSize: 10,
   },
   color: ['#4992ff', '#7cffb2'],
 };
 
 const chartConfig = {
-  chartKey: 'BaseBarChart',
-  chartName: '基础柱状图',
+  chartKey: 'ScatterChart',
+  chartName: '散点图',
   width: 500,
   height: 300,
   chartOption,

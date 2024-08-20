@@ -69,18 +69,7 @@ function initChart() {
 function loadChart() {
   myChart.setOption({
     ...props.chartOption,
-    xAxis: {
-      ...props.chartOption.xAxis,
-      type: props.chartOption.orient === 'vertical' ? 'category' : 'value',
-    },
-    yAxis: {
-      ...props.chartOption.yAxis,
-      type: props.chartOption.orient === 'vertical' ? 'value' : 'category',
-    },
-    series: new Array(props.chartData?.dimensions?.length - 1).fill(0).map((item) => ({
-      ...props.chartOption.seriesConfig,
-      barGap: props.chartOption.seriesConfig.barGap + '%',
-    })),
+    series: new Array(props.chartData?.dimensions?.length - 1).fill(props.chartOption.seriesConfig),
     dataset: props.chartData,
   });
 }

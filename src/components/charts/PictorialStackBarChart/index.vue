@@ -109,7 +109,7 @@ function loadChart() {
 
   const seriesMapArr = props.chartOption?.seriesMap?.map((item, index) => ({
     ...item,
-    ...props.chartOption.series[index],
+    ...props.chartOption.seriesConfig,
     name: item.desc,
     color: index === 0 ? 'rgba(215, 246, 255,0.2)' : props.chartOption.color[index - 1],
     data: chartData.map((i) => {

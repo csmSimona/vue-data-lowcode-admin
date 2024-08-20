@@ -5,6 +5,7 @@ import PictorialStackBarChart from './PictorialStackBarChart/config';
 import BaseLineChart from './BaseLineChart/config';
 import LineAreaChart from './LineAreaChart/config';
 import BarLineChart from './BarLineChart/config';
+import ScatterChart from './ScatterChart/config';
 
 import BasePieChart from './BasePieChart/config';
 import RingChart from './RingChart/config';
@@ -22,6 +23,7 @@ export const ChartList = [
   StackBarChart,
   PictorialStackBarChart,
   BaseLineChart,
+  ScatterChart,
   LineAreaChart,
   BarLineChart,
   BasePieChart,

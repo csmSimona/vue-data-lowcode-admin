@@ -108,7 +108,7 @@ const chartOption = {
       },
     },
   },
-  series: new Array(chartData?.dimensions?.length).fill(0).map((_) => ({
+  seriesConfig: {
     type: 'pictorialBar',
     barGap: '-100%',
     itemStyle: {
@@ -126,7 +126,7 @@ const chartOption = {
     barWidth: 5, // 柱图宽度
     symbolRepeat: true, // 图形是否重复
     symbolSize: [20, '100%'],
-  })),
+  },
   color: ['#CB5B84', '#07B382', '#FFE266', '#27CEFF'],
   seriesMap: [
     {

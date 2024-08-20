@@ -3,6 +3,8 @@ import BaseBarChart from '@/components/Charts/BaseBarChart/index.vue';
 import PictorialStackBarChart from '@/components/Charts/PictorialStackBarChart/index.vue';
 import BaseLineChart from '@/components/Charts/BaseLineChart/index.vue';
 import BarLineChart from '@/components/Charts/BarLineChart/index.vue';
+import ScatterChart from '@/components/Charts/ScatterChart/index.vue';
+
 import BasePieChart from '@/components/Charts/BasePieChart/index.vue';
 import BaseMap from '@/components/Charts/BaseMap/index.vue';
 import StackMap from '@/components/Charts/StackMap/index.vue';
@@ -11,6 +13,7 @@ import BaseBarChartOption from '@/components/Charts/BaseBarChart/option.vue';
 import PictorialStackBarChartOption from '@/components/Charts/PictorialStackBarChart/option.vue';
 import BaseLineChartOption from '@/components/Charts/BaseLineChart/option.vue';
 import BarLineChartOption from '@/components/Charts/BarLineChart/option.vue';
+import ScatterChartOption from '@/components/Charts/ScatterChart/option.vue';
 import BasePieChartOption from '@/components/Charts/BasePieChart/option.vue';
 import BaseMapOption from '@/components/Charts/BaseMap/option.vue';
 import StackMapOption from '@/components/Charts/StackMap/option.vue';
@@ -27,6 +30,7 @@ export function setupCustomComponents(app: App) {
   app.component('StackBarChart', BaseBarChart);
   app.component('PictorialStackBarChart', PictorialStackBarChart);
   app.component('BaseLineChart', BaseLineChart);
+  app.component('ScatterChart', ScatterChart);
   app.component('LineAreaChart', BaseLineChart);
   app.component('BarLineChart', BarLineChart);
   app.component('BasePieChart', BasePieChart);
@@ -45,6 +49,7 @@ export function setupCustomComponents(app: App) {
   app.component('PictorialStackBarChartOption', PictorialStackBarChartOption);
   app.component('BaseLineChartOption', BaseLineChartOption);
   app.component('BarLineChartOption', BarLineChartOption);
+  app.component('ScatterChartOption', ScatterChartOption);
   app.component('LineAreaChartOption', BaseLineChartOption);
   app.component('BasePieChartOption', BasePieChartOption);
   app.component('RingChartOption', BasePieChartOption);

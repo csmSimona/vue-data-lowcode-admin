@@ -233,6 +233,15 @@ const legendIconOptions = [
     <NFormItemRow label="标记点大小">
       <NInputNumber v-model:value="seriesConfig.symbolSize" :min="0" class="w-full" />
     </NFormItemRow>
+    <NFormItemRow label="显示文本标签">
+      <NSwitch v-model:value="seriesConfig.label.show" size="small" />
+    </NFormItemRow>
+    <NFormItemRow label="文本颜色">
+      <NColorPicker v-model:value="seriesConfig.label.color" />
+    </NFormItemRow>
+    <NFormItemRow label="文本字号">
+      <NInputNumber v-model:value="seriesConfig.label.fontSize" :min="10" class="w-full" />
+    </NFormItemRow>
   </CollapseItem>
 
   <CollapseItem name="线条颜色" v-if="color">
