@@ -99,6 +99,12 @@ const chartOption = {
     smooth: false,
     symbol: 'circle',
     symbolSize: 0,
+    label: {
+      show: false,
+      position: 'top',
+      color: '#fff',
+      fontSize: 12,
+    },
   },
   color: ['#4992ff', '#7cffb2'], // 线条颜色
   areaColor: ['#4992ff', '#7cffb2'], // 面积颜色

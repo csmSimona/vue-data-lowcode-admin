@@ -6,6 +6,7 @@ import {
   DeleteOutlined
 } from '@vicons/antd';
 import { cloneDeep } from 'lodash';
+import { registerComponent } from '@/components/Charts/utils'
 
 const chartEditStore = useChartEditStore();
 const { selectComponent, dragData } = chartEditStore;
@@ -23,6 +24,7 @@ function dblclickHandle(item) {
     y: 0,
     id: Math.random().toFixed(6).slice(-6)
   };
+  registerComponent(newItem.chartKey); // 动态注册图表和图表配置组件
   chartEditStore.addComponentList(newItem);
   selectComponent.value = newItem;
 }

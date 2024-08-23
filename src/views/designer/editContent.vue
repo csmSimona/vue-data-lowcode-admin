@@ -1,5 +1,5 @@
 <script setup lang="jsx">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useChartEditStore } from '@/store/modules/chartEdit';
 import EditRule from './components/editRule.vue';
 import EditResize from './components/editResize.vue';
@@ -7,21 +7,13 @@ import {
   CopyOutlined,
   DeleteOutlined
 } from '@vicons/antd';
+import { registerComponent } from '@/components/Charts/utils'
 
 const chartEditStore = useChartEditStore();
 const { dragData, selectComponent } = chartEditStore;
 const { canvasConfig, componentList } = chartEditStore.designData;
 
 const editRuleRef = ref();
-
-onMounted(() => {
-  // 到时候换成方法：参考 goview componentInstall
-  // if(!window['$vue'].component(key) && node) {
-  //   console.log('key', key)
-  //   window['$vue'].component(key, node)
-  // }
-
-});
 
 const canvasScale = computed(() => (editRuleRef.value ? editRuleRef.value.canvasScale : 0.4));
 const computedFontSize = computed(() => (12 / canvasScale.value) + 'px');
@@ -34,6 +26,8 @@ function drop(e) {
     y: e.offsetY - dragData.value.height / 2,
     id: Math.random().toFixed(6).slice(-6)
   };
+
+  registerComponent(newComponent.chartKey); // 动态注册图表和图表配置组件
   chartEditStore.addComponentList(newComponent);
   dragData.value = {};
   selectComponent.value = newComponent;

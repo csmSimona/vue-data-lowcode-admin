@@ -84,7 +84,7 @@ const geoOptions = [
       disabled: true,
     },
     silent: true, // 不响应和触发鼠标事件
-    layoutCenter: ['49%', '50%'], // 位置
+    layoutCenter: ['50%', '51%'], // 位置
     // 颜色
     itemStyle: {
       borderWidth: 0,
@@ -101,7 +101,7 @@ const geoOptions = [
       disabled: true,
     },
     silent: true, // 不响应和触发鼠标事件
-    layoutCenter: ['49%', '50%'], // 位置
+    layoutCenter: ['50%', '51.3%'], // 位置
     // 颜色
     itemStyle: {
       borderColor: 'rgba(0, 0, 0, 0.3)',

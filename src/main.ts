@@ -1,7 +1,12 @@
 import './styles/tailwind.css';
 import './styles/index.less';
 import { createApp } from 'vue';
-import { setupNaiveDiscreteApi, setupNaive, setupDirectives, setupCustomComponents } from '@/plugins';
+import {
+  setupNaiveDiscreteApi,
+  setupNaive,
+  setupDirectives,
+  setupCustomComponents,
+} from '@/plugins';
 import App from './App.vue';
 import router, { setupRouter } from './router';
 import { setupStore } from '@/store';
@@ -19,7 +24,7 @@ async function bootstrap() {
   setupNaiveDiscreteApi();
 
   // 注册全局自定义组件
-  setupCustomComponents(app);
+  // setupCustomComponents(app);
 
   // 注册全局自定义指令，如：v-permission权限指令
   setupDirectives(app);
@@ -40,6 +45,9 @@ async function bootstrap() {
   document.head.appendChild(meta);
 
   app.mount('#app', true);
+
+  // 挂载到 window
+  (window as any).$vue = app;
 }
 
 void bootstrap();

@@ -425,7 +425,7 @@ export default chartConfig;
 
 
 
-##### **全局注册图表及图表配置组件**
+##### ~~**全局注册图表及图表配置组件（已修改成使用动态注册组件）**~~
 
 plugins/customComponents.ts
 
@@ -463,6 +463,85 @@ const app = createApp(App);
 // 注册全局自定义组件
 setupCustomComponents(app);
 ...
+```
+
+
+
+##### 动态注册图表及图表配置组件
+
+**@/components/Charts/utils.ts**
+
+定义动态获取组件方法
+
+```typescript
+// 从文件系统导入多个模块
+const indexModules: Record<string, { default: string }> = import.meta.glob('./**/index.vue', {
+  eager: true, // 直接引入所有的模块
+});
+const optionModules: Record<string, { default: string }> = import.meta.glob('./**/option.vue', {
+  eager: true,
+});
+
+// 获取组件
+export const fetchComponent = (key, type) => {
+  if (type === 'option') {
+    return optionModules[`./${key}/option.vue`].default;
+  }
+  return indexModules[`./${key}/index.vue`].default;
+};
+
+// 动态注册图表和图表配置组件
+export const registerComponent = (key) => {
+  if (!window['$vue'].component(key)) {
+    window['$vue'].component(key, fetchComponent(key, 'chart'));
+  }
+  if (!window['$vue'].component(key + 'Option')) {
+    window['$vue'].component(key + 'Option', fetchComponent(key, 'option'));
+  }
+};
+```
+
+
+
+**main.ts**
+
+将app挂载到window上
+
+```typescript
+...
+async function bootstrap() {
+  const app = createApp(App);
+  ...
+  app.mount('#app', true);
+
+  // 挂载到 window
+  (window as any).$vue = app;
+}
+
+void bootstrap();
+```
+
+
+
+组件库拖拽或双击组件时动态注册组件
+
+具体可以看第7点
+
+```typescript
+import { registerComponent } from '@/components/Charts/utils'
+
+// 鼠标双击添加图表实例
+function dblclickHandle(item) {
+  const newItem = {
+    ...item,
+    x: 0,
+    y: 0,
+    id: Math.random().toFixed(6).slice(-6)
+  };
+  registerComponent(newItem.chartKey); // 动态注册图表和图表配置组件
+  chartEditStore.addComponentList(newItem);
+  selectComponent.value = newItem;
+}
 ```
 
 
@@ -669,6 +748,7 @@ function drop(e) {
     y: e.offsetY - dragData.value.height / 2,
     id: Math.random().toFixed(6).slice(-6)
   };
+  registerComponent(newComponent.chartKey); // 动态注册图表和图表配置组件
   chartEditStore.addComponentList(newComponent); // 添加实例到图表数组
   dragData.value = {}; // 清空拖拽数据
   selectComponent.value = newComponent; // 更新当前选中的图表实例
@@ -690,6 +770,7 @@ function dblclickHandle(item) {
     y: 0,
     id: Math.random().toFixed(6).slice(-6)
   };
+  registerComponent(newItem.chartKey); // 动态注册图表和图表配置组件
   chartEditStore.addComponentList(newItem); // 添加实例到图表数组
   selectComponent.value = newItem; // 更新当前选中的图表实例
 }
