@@ -117,7 +117,18 @@ async function loadChart() {
           }
         : null,
     },
-    dataset: props.chartData,
+    series: props.chartOption.series?.map((item) => {
+      switch (item.type) {
+        case 'map':
+          item.data = props.chartData.map;
+          break;
+        case 'effectScatter':
+          item.data = props.chartData.point;
+          break;
+      }
+
+      return item;
+    }),
   });
 
   // 自动轮播

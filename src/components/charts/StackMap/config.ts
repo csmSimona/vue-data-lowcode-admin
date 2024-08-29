@@ -169,6 +169,60 @@ const chartOption = {
       type: 'map',
       geoIndex: 0,
     },
+    {
+      name: '',
+      type: 'effectScatter',
+      coordinateSystem: 'geo',
+      symbol: 'circle',
+      symbolSize: 4,
+      legendHoverLink: true,
+      // 配置何时显示特效
+      showEffectOn: 'render',
+      // 涟漪特效相关配置
+      rippleEffect: {
+        scale: 6,
+        color: '#FFFFFF',
+        brushType: 'fill', // 涟漪的绘制方式
+      },
+      label: {
+        formatter: '{b}',
+        fontSize: 12,
+        position: 'bottom',
+        color: '#FFFFFF',
+        show: true,
+      },
+      itemStyle: {
+        color: '#FFFFFF',
+      },
+      tooltip: {
+        show: true,
+        formatter: (dataItem) => dataItem.marker + dataItem.name + '：' + dataItem.value[2],
+      },
+    },
+    {
+      type: 'lines',
+      zlevel: 2,
+      // 线特效的配置
+      effect: {
+        show: true,
+        period: 4, // 特效动画的时间
+        symbol: 'arrow', // 图标
+        symbolSize: 7, // 图标大小
+        color: '#05A422', // 特效标记的颜色
+        trailLength: 0.4, // 特效尾迹长度[0,1]值越大，尾迹越长重
+      },
+      lineStyle: {
+        normal: {
+          color: '#05A422',
+          width: 1, // 线条宽度
+          opacity: 0.1, // 尾迹线条透明度
+          curveness: 0.3, // 尾迹线条曲直度
+        },
+      },
+      tooltip: {
+        show: false,
+      },
+    },
   ],
 };
 

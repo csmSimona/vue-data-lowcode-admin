@@ -27,6 +27,9 @@
   const geo = computed(() => {
     return props.config.geo;
   });
+  const scatterConfig = computed(() => {
+    return props.config.series[1];
+  });
 
   // 图例布局方式
   const legendOrientOptions = [
@@ -84,6 +87,42 @@
     },
   ];
 
+  // 散点形状
+  const legendIconOptions = [
+    {
+      label: '圆形',
+      value: 'circle',
+    },
+    {
+      label: '矩形',
+      value: 'rect',
+    },
+    {
+      label: '圆角矩形',
+      value: 'roundRect',
+    },
+    {
+      label: '三角形',
+      value: 'triangle',
+    },
+    {
+      label: '菱形',
+      value: 'diamond',
+    },
+  ];
+
+  // 涟漪的绘制方式
+  const rippleEffectOptions = [
+    {
+      value: 'fill',
+      label: '实心'
+    },
+    {
+      value: 'stroke',
+      label: '空心'
+    }
+  ]
+
   // 新增配色条件
   const handleAddCondition = () => {
     visualMap.value.pieces.push({
@@ -119,47 +158,6 @@
     </NFormItemRow>
     <NFormItemRow label="标题字号">
       <NInputNumber v-model:value="title.textStyle.fontSize" :min="10" class="w-full" />
-    </NFormItemRow>
-  </CollapseItem>
-
-  <CollapseItem name="基础地图">
-    <NFormItemRow label="地图区域">
-      <NSelect v-model:value="geo.map" :options="mapRegionOptions" />
-    </NFormItemRow>
-    <NFormItemRow label="缩放比例">
-      <NInputNumber v-model:value="geo.zoom" class="w-full" />
-    </NFormItemRow>
-    <NFormItemRow label="文本标签展示">
-      <NSwitch v-model:value="geo.label.normal.show" size="small" />
-    </NFormItemRow>
-    <NFormItemRow label="文本标签颜色">
-      <NColorPicker v-model:value="geo.label.normal.color" />
-    </NFormItemRow>
-    <NFormItemRow label="文本标签字号">
-      <NInputNumber v-model:value="geo.label.normal.fontSize" :min="10" class="w-full" />
-    </NFormItemRow>
-
-    <NFormItemRow label="区域边框">
-      <NColorPicker v-model:value="geo.itemStyle.normal.borderColor" />
-    </NFormItemRow>
-    <NFormItemRow label="鼠标悬停聚焦颜色">
-      <NColorPicker v-model:value="geo.itemStyle.emphasis.areaColor" />
-    </NFormItemRow>
-
-    <NFormItemRow label="地图投影">
-      <NSwitch v-model:value="geo.showProjection" size="small" />
-    </NFormItemRow>
-    <NFormItemRow label="投影类型">
-      <NSelect v-model:value="geo.projectionType" :options="projectionTypeOptions" />
-    </NFormItemRow>
-
-    <NFormItemRow label="自动轮播">
-      <NSwitch v-model:value="chartConfig.autoPlay" size="small" />
-    </NFormItemRow>
-    <NFormItemRow label="轮播间隔">
-      <NInputNumber v-model:value="chartConfig.interval" :min="1000" class="w-full">
-        <template #suffix> 毫秒 </template>
-      </NInputNumber>
     </NFormItemRow>
   </CollapseItem>
 
@@ -232,6 +230,80 @@
 
     <NFormItemRow label="颜色分布" v-else>
       <ColorRange v-model:color="visualMap.inRange.color" :data-length="1" />
+    </NFormItemRow>
+  </CollapseItem>
+
+  <CollapseItem name="基础地图">
+    <NFormItemRow label="地图区域">
+      <NSelect v-model:value="geo.map" :options="mapRegionOptions" />
+    </NFormItemRow>
+    <NFormItemRow label="缩放比例">
+      <NInputNumber v-model:value="geo.zoom" class="w-full" />
+    </NFormItemRow>
+    <NFormItemRow label="文本标签展示">
+      <NSwitch v-model:value="geo.label.normal.show" size="small" />
+    </NFormItemRow>
+    <NFormItemRow label="文本标签颜色">
+      <NColorPicker v-model:value="geo.label.normal.color" />
+    </NFormItemRow>
+    <NFormItemRow label="文本标签字号">
+      <NInputNumber v-model:value="geo.label.normal.fontSize" :min="10" class="w-full" />
+    </NFormItemRow>
+
+    <NFormItemRow label="区域边框">
+      <NColorPicker v-model:value="geo.itemStyle.normal.borderColor" />
+    </NFormItemRow>
+    <NFormItemRow label="鼠标悬停聚焦颜色">
+      <NColorPicker v-model:value="geo.itemStyle.emphasis.areaColor" />
+    </NFormItemRow>
+
+    <NFormItemRow label="地图投影">
+      <NSwitch v-model:value="geo.showProjection" size="small" />
+    </NFormItemRow>
+    <NFormItemRow label="投影类型">
+      <NSelect v-model:value="geo.projectionType" :options="projectionTypeOptions" />
+    </NFormItemRow>
+
+    <NFormItemRow label="自动轮播">
+      <NSwitch v-model:value="chartConfig.autoPlay" size="small" />
+    </NFormItemRow>
+    <NFormItemRow label="轮播间隔">
+      <NInputNumber v-model:value="chartConfig.interval" :min="1000" class="w-full">
+        <template #suffix> 毫秒 </template>
+      </NInputNumber>
+    </NFormItemRow>
+  </CollapseItem>
+
+  <CollapseItem name="散点">
+    <NFormItemRow label="显示文本标签">
+      <NSwitch v-model:value="scatterConfig.label.show" size="small" />
+    </NFormItemRow>
+    <NFormItemRow label="文本颜色">
+      <NColorPicker v-model:value="scatterConfig.label.color" />
+    </NFormItemRow>
+    <NFormItemRow label="文本字号">
+      <NInputNumber v-model:value="scatterConfig.label.fontSize" :min="10" class="w-full" />
+    </NFormItemRow>
+    <NFormItemRow label="散点形状">
+      <NSelect v-model:value="scatterConfig.symbol" :options="legendIconOptions" />
+    </NFormItemRow>
+    <NFormItemRow label="散点大小">
+      <NInputNumber v-model:value="scatterConfig.symbolSize" :min="0" class="w-full" />
+    </NFormItemRow>
+    <NFormItemRow label="散点颜色">
+      <NColorPicker v-model:value="scatterConfig.itemStyle.color" />
+    </NFormItemRow>
+    <NFormItemRow label="涟漪的绘制方式">
+      <NSelect
+        v-model:value="scatterConfig.rippleEffect.brushType"
+        :options="rippleEffectOptions"
+      />
+    </NFormItemRow>
+    <NFormItemRow label="涟漪大小">
+      <NInputNumber v-model:value="scatterConfig.rippleEffect.scale" :min="0" class="w-full" />
+    </NFormItemRow>
+    <NFormItemRow label="涟漪颜色">
+      <NColorPicker v-model:value="scatterConfig.rippleEffect.color" />
     </NFormItemRow>
   </CollapseItem>
 </template>

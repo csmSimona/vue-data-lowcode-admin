@@ -20,6 +20,7 @@ import BaseMap from './BaseMap/config';
 import CarouselMap from './CarouselMap/config';
 import ProjectionMap from './ProjectionMap/config';
 import ScatterMap from './ScatterMap/config';
+import LinesMap from './LinesMap/config';
 import StackMap from './StackMap/config';
 import Pseudo3DMap from './Pseudo3DMap/config';
 
@@ -39,6 +40,7 @@ export const ChartList = [
   CarouselMap,
   ProjectionMap,
   ScatterMap,
+  LinesMap,
   StackMap,
   Pseudo3DMap,
 ];

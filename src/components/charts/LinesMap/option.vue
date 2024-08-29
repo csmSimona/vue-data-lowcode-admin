@@ -25,7 +25,7 @@
     return props.config.visualMap;
   });
   const geo = computed(() => {
-    return props.config.geoConfig;
+    return props.config.geo;
   });
   const scatterConfig = computed(() => {
     return props.config.series[1];
@@ -33,7 +33,6 @@
   const linesConfig = computed(() => {
     return props.config.series[2];
   });
-
 
   // 图例布局方式
   const legendOrientOptions = [
@@ -79,6 +78,18 @@
     },
   ]
 
+  // 投影类型
+  const projectionTypeOptions = [
+    {
+      label: '自定义投影',
+      value: 'custom',
+    },
+    {
+      label: '墨卡托投影',
+      value: 'Mercator',
+    },
+  ];
+
   // 散点形状
   const legendIconOptions = [
     {
@@ -118,6 +129,7 @@
       label: '空心'
     }
   ]
+
   // 新增配色条件
   const handleAddCondition = () => {
     visualMap.value.pieces.push({
@@ -168,7 +180,7 @@
     </NFormItemRow>
   </CollapseItem>
 
-  <CollapseItem name="图例" v-if="visualMap">
+  <CollapseItem name="图例">
     <template #header>
       <NSwitch v-model:value="visualMap.show" size="small" />
     </template>
@@ -233,17 +245,8 @@
       <NSelect v-model:value="geo.map" :options="mapRegionOptions" />
     </NFormItemRow>
     <NFormItemRow label="缩放比例">
-      <NInputNumber v-model:value="geo.layoutSize" class="w-full">
-        <template #suffix> % </template>
-      </NInputNumber>
+      <NInputNumber v-model:value="geo.zoom" class="w-full" />
     </NFormItemRow>
-    <NFormItemRow label="地图长宽比">
-      <NInputNumber v-model:value="geo.aspectScale" class="w-full" />
-    </NFormItemRow>
-    <NFormItemRow label="禁止鼠标事件">
-      <NSwitch v-model:value="geo.silent" size="small" />
-    </NFormItemRow>
-
     <NFormItemRow label="文本标签展示">
       <NSwitch v-model:value="geo.label.normal.show" size="small" />
     </NFormItemRow>
@@ -253,9 +256,21 @@
     <NFormItemRow label="文本标签字号">
       <NInputNumber v-model:value="geo.label.normal.fontSize" :min="10" class="w-full" />
     </NFormItemRow>
-    <NFormItemRow label="鼠标悬停聚焦颜色">
-      <NColorPicker v-model:value="geo.areaColor" />
+
+    <NFormItemRow label="区域边框">
+      <NColorPicker v-model:value="geo.itemStyle.normal.borderColor" />
     </NFormItemRow>
+    <NFormItemRow label="鼠标悬停聚焦颜色">
+      <NColorPicker v-model:value="geo.itemStyle.emphasis.areaColor" />
+    </NFormItemRow>
+
+    <NFormItemRow label="地图投影">
+      <NSwitch v-model:value="geo.showProjection" size="small" />
+    </NFormItemRow>
+    <NFormItemRow label="投影类型">
+      <NSelect v-model:value="geo.projectionType" :options="projectionTypeOptions" />
+    </NFormItemRow>
+
     <NFormItemRow label="自动轮播">
       <NSwitch v-model:value="chartConfig.autoPlay" size="small" />
     </NFormItemRow>

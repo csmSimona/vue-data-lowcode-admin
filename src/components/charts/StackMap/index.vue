@@ -116,7 +116,21 @@ async function loadChart() {
       label: index === 0 ? geoConfig.label : {},
       layoutSize: geoConfig.layoutSize + '%',
     })),
-    dataset: props.chartData,
+    series: props.chartOption.series?.map((item) => {
+      switch (item.type) {
+        case 'map':
+          item.data = props.chartData.map;
+          break;
+        case 'effectScatter':
+          item.data = props.chartData.point;
+          break;
+        case 'lines':
+          item.data = props.chartData.line;
+          break;
+      }
+
+      return item;
+    }),
   });
 
   // 自动轮播

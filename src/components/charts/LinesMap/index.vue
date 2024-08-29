@@ -83,39 +83,40 @@ function initChart() {
   };
   loadChart();
 }
+const mapProject = (point) => {
+  switch (props.chartOption.geo.projectionType) {
+    case 'custom':
+      return [0.5 * point[0] + 0.5 * point[1], -0.4 * point[1] + 0.2 * point[0]];
+    case 'Mercator':
+      return [
+        (point[0] / 180) * Math.PI,
+        -Math.log(Math.tan((Math.PI / 2 + (point[1] / 180) * Math.PI) / 2)),
+      ];
+  }
+};
+
+const mapUnproject = (point) => {
+  return [point[0], point[1]];
+};
 
 // 加载图表配置和数据
 async function loadChart() {
-  const geoConfig = props.chartOption.geoConfig;
   // 注册地图
-  const mapName = geoConfig.map;
+  const mapName = props.chartOption.geo.map;
   const newMapJson = await getMapJson(mapName);
   echart.registerMap(mapName, newMapJson);
 
   myChart.setOption({
     ...props.chartOption,
-    geo: props.chartOption.geo?.map((item, index) => ({
-      ...item,
-      ...geoConfig,
-      emphasis: {
-        disabled: index === 0 ? geoConfig.silent : true,
-      },
-      silent: index === 0 ? geoConfig.silent : true,
-      itemStyle: {
-        ...item.itemStyle,
-        emphasis:
-          index === 0
-            ? {
-                areaColor: geoConfig.areaColor,
-                shadowOffsetX: 0,
-                shadowOffsetY: 0,
-                borderWidth: 0,
-              }
-            : {},
-      },
-      label: index === 0 ? geoConfig.label : {},
-      layoutSize: geoConfig.layoutSize + '%',
-    })),
+    geo: {
+      ...props.chartOption.geo,
+      projection: props.chartOption.geo.showProjection
+        ? {
+            project: (point) => mapProject(point),
+            unproject: (point) => mapUnproject(point),
+          }
+        : null,
+    },
     series: props.chartOption.series?.map((item) => {
       switch (item.type) {
         case 'map':
