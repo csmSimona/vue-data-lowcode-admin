@@ -1,89 +1,86 @@
 <script setup lang="jsx">
-import { computed, ref } from 'vue';
-import { useChartEditStore } from '@/store/modules/chartEdit';
-import EditRule from './components/editRule.vue';
-import EditResize from './components/editResize.vue';
-import {
-  CopyOutlined,
-  DeleteOutlined
-} from '@vicons/antd';
-import { registerComponent } from '@/components/Charts/utils'
+  import { computed, ref } from 'vue';
+  import { useChartEditStore } from '@/store/modules/chartEdit';
+  import EditRule from './components/editRule.vue';
+  import EditResize from './components/editResize.vue';
+  import { CopyOutlined, DeleteOutlined } from '@vicons/antd';
+  import { registerComponent } from '@/components/Charts/utils';
 
-const chartEditStore = useChartEditStore();
-const { dragData, selectComponent } = chartEditStore;
-const { canvasConfig, componentList } = chartEditStore.designData;
+  const chartEditStore = useChartEditStore();
+  const { dragData, selectComponent } = chartEditStore;
+  const { canvasConfig, componentList } = chartEditStore.designData;
 
-const editRuleRef = ref();
+  const editRuleRef = ref();
 
-const canvasScale = computed(() => (editRuleRef.value ? editRuleRef.value.canvasScale : 0.4));
-const computedFontSize = computed(() => (12 / canvasScale.value) + 'px');
+  const canvasScale = computed(() => (editRuleRef.value ? editRuleRef.value.canvasScale : 0.4));
+  const computedFontSize = computed(() => 12 / canvasScale.value + 'px');
 
-// 组件库组件拖拽放入画布
-function drop(e) {
-  const newComponent = {
-    ...dragData.value,
-    x: e.offsetX - dragData.value.width / 2,
-    y: e.offsetY - dragData.value.height / 2,
-    id: Math.random().toFixed(6).slice(-6)
-  };
+  // 组件库组件拖拽放入画布
+  function drop(e) {
+    const newComponent = {
+      ...dragData.value,
+      x: e.offsetX - dragData.value.width / 2,
+      y: e.offsetY - dragData.value.height / 2,
+      id: Math.random().toFixed(6).slice(-6),
+    };
 
-  registerComponent(newComponent.chartKey); // 动态注册图表和图表配置组件
-  chartEditStore.addComponentList(newComponent);
-  dragData.value = {};
-  selectComponent.value = newComponent;
-}
+    registerComponent(newComponent.chartKey); // 动态注册图表和图表配置组件
+    chartEditStore.addComponentList(newComponent);
+    dragData.value = {};
+    selectComponent.value = newComponent;
+  }
 
-// 点击画布空白处
-function handleClickBlank() {
-  selectComponent.value = {};
-  console.log('componentList', componentList);
-}
+  // 点击画布空白处
+  function handleClickBlank() {
+    selectComponent.value = {};
+    console.log('componentList', componentList);
+  }
 
-// 选中图表实例
-function handleSelectItem(e, item) {
-  e.stopPropagation();
-  selectComponent.value = item;
-}
+  // 选中图表实例
+  function handleSelectItem(e, item) {
+    e.stopPropagation();
+    selectComponent.value = item;
+  }
 
-// 复制选中图表实例
-function handleCopy(e, item) {
-  e.stopPropagation();
-  const newComponent = {
-    ...item,
-    x: item.x + item.width / 2,
-    y: item.y + item.height / 2,
-    id: Math.random().toFixed(6).slice(-6)
-  };
-  chartEditStore.addComponentList(newComponent);
-  selectComponent.value = newComponent;
-}
+  // 复制选中图表实例
+  function handleCopy(e, item) {
+    e.stopPropagation();
+    const newComponent = {
+      ...item,
+      x: item.x + item.width / 2,
+      y: item.y + item.height / 2,
+      id: Math.random().toFixed(6).slice(-6),
+    };
+    chartEditStore.addComponentList(newComponent);
+    selectComponent.value = newComponent;
+  }
 
-// 删除选中图表实例
-function handleDelete(e, item) {
-  e.stopPropagation();
-  chartEditStore.removeComponent(item.id);
-  selectComponent.value = {};
-}
+  // 删除选中图表实例
+  function handleDelete(e, item) {
+    e.stopPropagation();
+    chartEditStore.removeComponent(item.id);
+    selectComponent.value = {};
+  }
 
-// 图表实例拖拽移动
-function handleMouseDown(e, item, index) {
-  const mousemove = event => {
-    const x = item.x + (event.clientX - e.clientX) / canvasScale.value;
-    const y = item.y + (event.clientY - e.clientY) / canvasScale.value;
-    chartEditStore.updateComponent(index, {
-      x: Math.round(x),
-      y: Math.round(y)
-    });
-  };
+  // 图表实例拖拽移动
+  function handleMouseDown(e, item, index) {
+    const mousemove = (event) => {
+      const x = item.x + (event.clientX - e.clientX) / canvasScale.value;
+      const y = item.y + (event.clientY - e.clientY) / canvasScale.value;
+      chartEditStore.updateComponent(index, {
+        x: Math.round(x),
+        y: Math.round(y),
+      });
+    };
 
-  const mouseup = () => {
-    document.removeEventListener('mousemove', mousemove);
-    document.removeEventListener('mouseup', mouseup);
-  };
+    const mouseup = () => {
+      document.removeEventListener('mousemove', mousemove);
+      document.removeEventListener('mouseup', mouseup);
+    };
 
-  document.addEventListener('mousemove', mousemove);
-  document.addEventListener('mouseup', mouseup);
-}
+    document.addEventListener('mousemove', mousemove);
+    document.addEventListener('mouseup', mouseup);
+  }
 </script>
 
 <template>
@@ -109,8 +106,10 @@ function handleMouseDown(e, item, index) {
           :key="item.id"
           class="edit-content-chart"
           :style="{
-            top: item.y + 'px',
-            left: item.x + 'px',
+            // top: item.y + 'px',
+            // left: item.x + 'px',
+            transform: `translate(${item.x}px, ${item.y}px)`,
+            willChange: 'transform',
             width: item.width + 'px',
             height: item.height + 'px',
           }"
@@ -158,51 +157,51 @@ function handleMouseDown(e, item, index) {
 </template>
 
 <style scoped>
-.edit-content-wrapper {
-  flex: 1;
-  border-left: 1px solid #d9d9d9;
-  border-right: 1px solid #d9d9d9;
-  position: relative;
-  background: #000;
-}
-.web-container {
-  position: relative;
-  overflow: hidden;
-}
+  .edit-content-wrapper {
+    flex: 1;
+    border-left: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+    position: relative;
+    background: #000;
+  }
+  .web-container {
+    position: relative;
+    overflow: hidden;
+  }
 
-.edit-content-chart {
-  position: absolute;
-}
+  .edit-content-chart {
+    position: absolute;
+  }
 
-.activeMask {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  /* z-index: 999; */
-  cursor: move;
-}
+  .activeMask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    /* z-index: 999; */
+    cursor: move;
+  }
 
-.toolBox {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: #fff;
-  display: none;
-}
+  .toolBox {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    display: none;
+  }
 
-.edit-content-chart:hover .activeMask {
-  border: 1px dashed #b6bfce;
-}
-.selectMask {
-  border: 1px solid #b6bfce !important;
-}
-.edit-content-chart:hover .toolBox,
-.selectToolBox {
-  display: flex;
-}
-.text-icon {
-  cursor: pointer;
-  z-index: 1000;
-  font-size: v-bind(computedFontSize);
-}
+  .edit-content-chart:hover .activeMask {
+    border: 1px dashed #b6bfce;
+  }
+  .selectMask {
+    border: 1px solid #b6bfce !important;
+  }
+  .edit-content-chart:hover .toolBox,
+  .selectToolBox {
+    display: flex;
+  }
+  .text-icon {
+    cursor: pointer;
+    z-index: 1000;
+    font-size: v-bind(computedFontSize);
+  }
 </style>

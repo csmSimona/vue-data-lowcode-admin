@@ -88,7 +88,7 @@
     nextTick,
   } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
-  import { storage } from '@/utils/Storage';
+  import { storage } from '@/utils/storage';
   import { TABS_ROUTES } from '@/store/mutation-types';
   import { useTabsViewStore } from '@/store/modules/tabsView';
   import { useAsyncRouteStore } from '@/store/modules/asyncRoute';

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { IS_SCREENLOCKED } from '@/store/mutation-types';
-import { storage } from '@/utils/Storage';
+import { storage } from '@/utils/storage';
 
 // 长时间不操作默认锁屏时间
 const initTime = 60 * 60;

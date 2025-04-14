@@ -1,45 +1,45 @@
 <script setup lang="jsx">
-import { useRoute } from 'vue-router';
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
-import { useChartEditStore } from '@/store/modules/chartEdit';
+  import { useRoute } from 'vue-router';
+  import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+  import { useChartEditStore } from '@/store/modules/chartEdit';
 
-const route = useRoute();
-const chartEditStore = useChartEditStore();
-const { canvasConfig, componentList } = chartEditStore.designData;
-const scale = ref(1);
+  const route = useRoute();
+  const chartEditStore = useChartEditStore();
+  const { canvasConfig, componentList } = chartEditStore.designData;
+  const scale = ref(1);
 
-const updateScale = () => {
-  // 获取屏幕的宽度和高度
-  const fitWidth = window.innerWidth;
-  const fitHeight = window.innerHeight;
-  const scaleWidth = fitWidth / canvasConfig.width;
-  const scaleHeight = fitHeight / canvasConfig.height;
-  scale.value = Math.min(scaleWidth, scaleHeight);
-};
+  const updateScale = () => {
+    // 获取屏幕的宽度和高度
+    const fitWidth = window.innerWidth;
+    const fitHeight = window.innerHeight;
+    const scaleWidth = fitWidth / canvasConfig.width;
+    const scaleHeight = fitHeight / canvasConfig.height;
+    scale.value = Math.min(scaleWidth, scaleHeight);
+  };
 
-onMounted(() => {
-  if (route.query?.type === 'view') {
-    // TODO 通过id获取大屏配置数据
-    console.log('route', route.query.id);
-  }
-  window.addEventListener('resize', updateScale);
-});
+  onMounted(() => {
+    if (route.query?.type === 'view') {
+      // TODO 通过id获取大屏配置数据
+      console.log('route', route.query.id);
+    }
+    window.addEventListener('resize', updateScale);
+  });
 
-onUnmounted(() => {
-  window.removeEventListener('resize', updateScale);
-});
+  onUnmounted(() => {
+    window.removeEventListener('resize', updateScale);
+  });
 
-watch(
-  () => [canvasConfig.width, canvasConfig.height],
-  () => {
-    nextTick(() => {
-      updateScale();
-    });
-  },
-  {
-    immediate: true
-  }
-);
+  watch(
+    () => [canvasConfig.width, canvasConfig.height],
+    () => {
+      nextTick(() => {
+        updateScale();
+      });
+    },
+    {
+      immediate: true,
+    }
+  );
 </script>
 
 <template>
@@ -75,8 +75,9 @@ watch(
           :key="item.id"
           class="edit-content-chart"
           :style="{
-            top: item.y + 'px',
-            left: item.x + 'px',
+            // top: item.y + 'px',
+            // left: item.x + 'px',
+            transform: `translate(${item.x}px, ${item.y}px)`,
             width: item.width + 'px',
             height: item.height + 'px',
           }"
@@ -96,20 +97,20 @@ watch(
 </template>
 
 <style scoped>
-.edit-content-wrapper {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-}
-.web-container {
-  position: relative;
-  overflow: hidden;
-}
-.edit-content-chart {
-  position: absolute;
-}
+  .edit-content-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+  }
+  .web-container {
+    position: relative;
+    overflow: hidden;
+  }
+  .edit-content-chart {
+    position: absolute;
+  }
 </style>
